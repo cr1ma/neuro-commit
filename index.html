@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>NeuroCommit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>NeuroCommit</h1>
+            <p>Перетворіть свій <code>git diff</code> у готовий промт для нейромережі та зробіть свій коміт кращим!</p>
+        </header>
+        <main>
+            <div class="split left">
+                <h2>Вивід команди git diff</h2>
+                <textarea id="gitDiffInput" placeholder="Вставте сюди результат команди git diff..."></textarea>
+            </div>
+            <div class="split right">
+                <h2>Згенерований промт для нейромережі</h2>
+                <div class="prompt-container">
+                    <pre id="promptOutput" class="prompt"></pre>
+                </div>
+                <button id="copyButton">Скопіювати промт</button>
+            </div>
+        </main>
+        <footer>
+            <p><a href="https://github.com/cr1ma/neuro-commit" target="_blank">Приєднуйтесь до розробки на GitHub</a></p>
+        </footer>
+    </div>
+    <div id="toast" class="toast"></div>
+    <script src="script.js"></script>
+</body>
+</html>
