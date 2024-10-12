@@ -3,6 +3,9 @@ const gitDiffInput = document.getElementById('gitDiffInput');
 const promptOutput = document.getElementById('promptOutput');
 const copyButton = document.getElementById('copyButton');
 const toast = document.getElementById('toast');
+const pasteButton = document.getElementById('pasteButton');
+const clearButton = document.getElementById('clearButton');
+const copyCommandButtons = document.querySelectorAll('.copyCommandButton');
 
 let promptTemplate = '';
 
@@ -70,6 +73,52 @@ function updatePrompt() {
 // Слідкуємо за змінами у полі введення і автоматично оновлюємо промт
 gitDiffInput.addEventListener('input', updatePrompt);
 
+// Обробляємо натискання кнопки "Скопіювати промт"
+copyButton.addEventListener('click', async () => {
+  const textToCopy = promptOutput.textContent;
+
+  try {
+    await navigator.clipboard.writeText(textToCopy);
+    showToast('Промт успішно скопійовано в буфер обміну!', 'success');
+  } catch (err) {
+    console.error('Не вдалося скопіювати текст: ', err);
+    showToast('Не вдалося скопіювати промт.', 'error');
+  }
+});
+
+// Обробляємо натискання кнопки "Вставити з буфера"
+pasteButton.addEventListener('click', async () => {
+  try {
+    const text = await navigator.clipboard.readText();
+    gitDiffInput.value = text;
+    updatePrompt();
+    showToast('Текст успішно вставлено з буфера обміну!', 'success');
+  } catch (err) {
+    console.error('Не вдалося вставити текст з буфера обміну: ', err);
+    showToast('Не вдалося вставити текст з буфера обміну.', 'error');
+  }
+});
+
+// Обробляємо натискання кнопки "Очистити поле"
+clearButton.addEventListener('click', () => {
+  gitDiffInput.value = '';
+  updatePrompt();
+});
+
+// Обробляємо натискання кнопок "Копіювати" для команд git
+copyCommandButtons.forEach(button => {
+  button.addEventListener('click', async () => {
+    const command = button.getAttribute('data-command');
+    try {
+      await navigator.clipboard.writeText(command);
+      showToast(`Команда "${command}" скопійована в буфер обміну!`, 'success');
+    } catch (err) {
+      console.error('Не вдалося скопіювати команду: ', err);
+      showToast('Не вдалося скопіювати команду.', 'error');
+    }
+  });
+});
+
 // Функція для показу сповіщення (toast) на екрані
 function showToast(message, type = 'success') {
   toast.className = 'toast';
@@ -90,16 +139,3 @@ function showToast(message, type = 'success') {
     toast.classList.add('hide');
   }, 3500);
 }
-
-// Обробляємо натискання кнопки "Скопіювати промт"
-copyButton.addEventListener('click', async () => {
-  const textToCopy = promptOutput.textContent;
-
-  try {
-    await navigator.clipboard.writeText(textToCopy);
-    showToast('Промт успішно скопійовано в буфер обміну!', 'success');
-  } catch (err) {
-    console.error('Не вдалося скопіювати текст: ', err);
-    showToast('Не вдалося скопіювати промт.', 'error');
-  }
-});

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>NeuroCommit</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Підключення шрифтів та стилів -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -16,7 +17,22 @@
         <main>
             <div class="split left">
                 <h2>Вивід команди git diff</h2>
+                <div class="textarea-controls">
+                    <button id="pasteButton">Вставити з буфера</button>
+                    <button id="clearButton">Очистити поле</button>
+                </div>
                 <textarea id="gitDiffInput" placeholder="Вставте сюди результат команди git diff..."></textarea>
+                <div class="git-commands">
+                    <h3>Команди для отримання git diff</h3>
+                    <div class="command">
+                        <code>git diff</code>
+                        <button class="copyCommandButton" data-command="git diff">Копіювати</button>
+                    </div>
+                    <div class="command">
+                        <code>git diff --staged</code>
+                        <button class="copyCommandButton" data-command="git diff --staged">Копіювати</button>
+                    </div>
+                </div>
             </div>
             <div class="split right">
                 <h2>Згенерований промт для нейромережі</h2>
