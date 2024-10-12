@@ -11,12 +11,25 @@
 <body>
     <div class="container">
         <header>
-            <h1>NeuroCommit</h1>
-            <p>Перетворіть свій <code>git diff</code> у готовий промт для нейромережі та зробіть свій коміт кращим!</p>
+            <div class="header-top">
+                <h1>NeuroCommit</h1>
+                <div class="language-switcher">
+                    <button id="langUk" class="active">УКР</button>
+                    <button id="langEn">ENG</button>
+                </div>
+                <div class="theme-switcher">
+                    <label class="switch">
+                        <input type="checkbox" id="themeToggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span id="themeLabel">Темна тема</span>
+                </div>
+            </div>
+            <p id="headerDescription">Перетворіть свій <code>git diff</code> у готовий промт для нейромережі та зробіть свій коміт кращим!</p>
         </header>
         <main>
             <div class="split left">
-                <h2>Вивід команди git diff</h2>
+                <h2 id="gitDiffTitle">Вивід команди git diff</h2>
                 <div class="textarea-controls">
                     <button id="pasteButton">Вставити з буфера</button>
                     <button id="clearButton">Очистити поле</button>
@@ -35,11 +48,14 @@
                 </div>
             </div>
             <div class="split right">
-                <h2>Згенерований промт для нейромережі</h2>
+                <h2 id="promptTitle">Згенерований промт для нейромережі</h2>
                 <div class="prompt-container">
                     <pre id="promptOutput" class="prompt"></pre>
                 </div>
-                <button id="copyButton">Скопіювати промт</button>
+                <div class="prompt-buttons">
+                    <button id="copyButton">Скопіювати промт</button>
+                    <button id="downloadButton">Завантажити промт</button>
+                </div>
             </div>
         </main>
         <footer>
