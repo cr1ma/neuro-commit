@@ -1,68 +1,97 @@
 <!DOCTYPE html>
 <html lang="uk">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>NeuroCommit</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Підключення шрифтів та стилів -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <div class="header-top">
-                <h1>NeuroCommit</h1>
-                <div class="language-switcher">
-                    <button id="langUk" class="active">УКР</button>
-                    <button id="langEn">ENG</button>
-                </div>
-                <div class="theme-switcher">
-                    <label class="switch">
-                        <input type="checkbox" id="themeToggle">
-                        <span class="slider"></span>
-                    </label>
-                    <span id="themeLabel">Темна тема</span>
-                </div>
+      <header>
+        <div class="header-top">
+          <h1>NeuroCommit</h1>
+          <div class="header-actions">
+            <div class="language-switcher">
+              <select
+                id="langSelect"
+                aria-label="Мова / Language"
+                title="Language"
+              >
+                <option value="uk">Українська</option>
+                <option value="en">English</option>
+                <option value="ru">Русский</option>
+              </select>
             </div>
-            <p id="headerDescription">Перетворіть свій <code>git diff</code> у готовий промт для нейромережі та зробіть свій коміт кращим!</p>
-        </header>
-        <main>
-            <div class="split left">
-                <h2 id="gitDiffTitle">Вивід команди git diff</h2>
-                <div class="textarea-controls">
-                    <button id="pasteButton">Вставити з буфера</button>
-                    <button id="clearButton">Очистити поле</button>
-                </div>
-                <textarea id="gitDiffInput" placeholder="Вставте сюди результат команди git diff..."></textarea>
-                <div class="git-commands">
-                    <h3>Команди для отримання git diff</h3>
-                    <div class="command">
-                        <code>git diff</code>
-                        <button class="copyCommandButton" data-command="git diff">Копіювати</button>
-                    </div>
-                    <div class="command">
-                        <code>git diff --staged</code>
-                        <button class="copyCommandButton" data-command="git diff --staged">Копіювати</button>
-                    </div>
-                </div>
+            <div class="theme-switcher">
+              <label class="switch" title="Theme">
+                <input type="checkbox" id="themeToggle" />
+                <span class="slider"></span>
+              </label>
+              <span id="themeLabel">Темна тема</span>
             </div>
-            <div class="split right">
-                <h2 id="promptTitle">Згенерований промт для нейромережі</h2>
-                <div class="prompt-container">
-                    <pre id="promptOutput" class="prompt"></pre>
-                </div>
-                <div class="prompt-buttons">
-                    <button id="copyButton">Скопіювати промт</button>
-                    <button id="downloadButton">Завантажити промт</button>
-                </div>
+          </div>
+        </div>
+        <p id="headerDescription">
+          Перетворіть свій <code>git diff</code> у готовий промт для нейромережі
+          та зробіть свій коміт кращим!
+        </p>
+      </header>
+      <main>
+        <div class="split left">
+          <h2 id="gitDiffTitle">Вивід команди git diff</h2>
+          <div class="textarea-controls">
+            <button id="pasteButton">Вставити з буфера</button>
+            <button id="clearButton">Очистити поле</button>
+          </div>
+          <textarea
+            id="gitDiffInput"
+            placeholder="Вставте сюди результат команди git diff..."
+          ></textarea>
+          <div class="git-commands">
+            <h3>Команди для отримання git diff</h3>
+            <div class="command">
+              <code>git diff</code>
+              <button class="copyCommandButton" data-command="git diff">
+                Копіювати
+              </button>
             </div>
-        </main>
-        <footer>
-            <p><a href="https://github.com/cr1ma/neuro-commit" target="_blank">Приєднуйтесь до розробки на GitHub</a></p>
-        </footer>
+            <div class="command">
+              <code>git diff --staged</code>
+              <button
+                class="copyCommandButton"
+                data-command="git diff --staged"
+              >
+                Копіювати
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="split right">
+          <h2 id="promptTitle">Згенерований промт для нейромережі</h2>
+          <div class="prompt-container">
+            <pre id="promptOutput" class="prompt"></pre>
+          </div>
+          <div class="prompt-buttons">
+            <button id="copyButton">Скопіювати промт</button>
+            <button id="downloadButton">Завантажити промт</button>
+          </div>
+        </div>
+      </main>
+      <footer>
+        <p>
+          <a href="https://github.com/cr1ma/neuro-commit" target="_blank"
+            >Приєднуйтесь до розробки на GitHub</a
+          >
+        </p>
+      </footer>
     </div>
     <div id="toast" class="toast"></div>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

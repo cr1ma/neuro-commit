@@ -1,154 +1,194 @@
-// Вибираємо елементи для подальшої роботи
-const gitDiffInput = document.getElementById('gitDiffInput');
-const promptOutput = document.getElementById('promptOutput');
-const copyButton = document.getElementById('copyButton');
-const downloadButton = document.getElementById('downloadButton');
-const toast = document.getElementById('toast');
-const pasteButton = document.getElementById('pasteButton');
-const clearButton = document.getElementById('clearButton');
-const copyCommandButtons = document.querySelectorAll('.copyCommandButton');
-const themeToggle = document.getElementById('themeToggle');
-const themeLabel = document.getElementById('themeLabel');
-const langUk = document.getElementById('langUk');
-const langEn = document.getElementById('langEn');
+// Елементи
+const gitDiffInput = document.getElementById("gitDiffInput");
+const promptOutput = document.getElementById("promptOutput");
+const copyButton = document.getElementById("copyButton");
+const downloadButton = document.getElementById("downloadButton");
+const toast = document.getElementById("toast");
+const pasteButton = document.getElementById("pasteButton");
+const clearButton = document.getElementById("clearButton");
+const copyCommandButtons = document.querySelectorAll(".copyCommandButton");
+const themeToggle = document.getElementById("themeToggle");
+const themeLabel = document.getElementById("themeLabel");
+const langSelect = document.getElementById("langSelect");
 
-// Тексти для підтримки мов
+// Тексти інтерфейсу
 const texts = {
   uk: {
-    headerDescription: 'Перетворіть свій <code>git diff</code> у готовий промт для нейромережі та зробіть свій коміт кращим!',
-    gitDiffTitle: 'Вивід команди git diff',
-    pasteButton: 'Вставити з буфера',
-    clearButton: 'Очистити поле',
-    promptTitle: 'Згенерований промт для нейромережі',
-    copyButton: 'Скопіювати промт',
-    downloadButton: 'Завантажити промт',
-    themeLabelLight: 'Світла тема',
-    themeLabelDark: 'Темна тема',
-    gitCommandsTitle: 'Команди для отримання git diff',
-    copyCommand: 'Копіювати',
-    toastCopied: 'Промт успішно скопійовано в буфер обміну!',
-    toastError: 'Не вдалося виконати дію.',
-    toastPasted: 'Текст успішно вставлено з буфера обміну!',
-    toastCommandCopied: 'Команда скопійована в буфер обміну!',
-    placeholder: 'Вставте сюди результат команди git diff...',
-    footerText: 'Приєднуйтесь до розробки на GitHub'
+    headerDescription:
+      "Перетворіть свій <code>git diff</code> у готовий промт для нейромережі та зробіть свій коміт кращим!",
+    gitDiffTitle: "Вивід команди git diff",
+    pasteButton: "Вставити з буфера",
+    clearButton: "Очистити поле",
+    promptTitle: "Згенерований промт для нейромережі",
+    copyButton: "Скопіювати промт",
+    downloadButton: "Завантажити промт",
+    themeLabelLight: "Світла тема",
+    themeLabelDark: "Темна тема",
+    gitCommandsTitle: "Команди для отримання git diff",
+    copyCommand: "Копіювати",
+    toastCopied: "Промт успішно скопійовано в буфер обміну!",
+    toastError: "Не вдалося виконати дію.",
+    toastPasted: "Текст успішно вставлено з буфера обміну!",
+    toastCommandCopied: "Команда скопійована в буфер обміну!",
+    placeholder: "Вставте сюди результат команди git diff...",
+    footerText: "Приєднуйтесь до розробки на GitHub",
   },
   en: {
-    headerDescription: 'Turn your <code>git diff</code> into a ready prompt for neural networks and make your commit better!',
-    gitDiffTitle: 'Output of git diff command',
-    pasteButton: 'Paste from clipboard',
-    clearButton: 'Clear field',
-    promptTitle: 'Generated prompt for neural network',
-    copyButton: 'Copy prompt',
-    downloadButton: 'Download prompt',
-    themeLabelLight: 'Light theme',
-    themeLabelDark: 'Dark theme',
-    gitCommandsTitle: 'Commands to get git diff',
-    copyCommand: 'Copy',
-    toastCopied: 'Prompt successfully copied to clipboard!',
-    toastError: 'Failed to perform the action.',
-    toastPasted: 'Text successfully pasted from clipboard!',
-    toastCommandCopied: 'Command copied to clipboard!',
-    placeholder: 'Paste the result of git diff command here...',
-    footerText: 'Join the development on GitHub'
-  }
+    headerDescription:
+      "Turn your <code>git diff</code> into a ready prompt for neural networks and make your commit better!",
+    gitDiffTitle: "Output of git diff command",
+    pasteButton: "Paste from clipboard",
+    clearButton: "Clear field",
+    promptTitle: "Generated prompt for neural network",
+    copyButton: "Copy prompt",
+    downloadButton: "Download prompt",
+    themeLabelLight: "Light theme",
+    themeLabelDark: "Dark theme",
+    gitCommandsTitle: "Commands to get git diff",
+    copyCommand: "Copy",
+    toastCopied: "Prompt successfully copied to clipboard!",
+    toastError: "Failed to perform the action.",
+    toastPasted: "Text successfully pasted from clipboard!",
+    toastCommandCopied: "Command copied to clipboard!",
+    placeholder: "Paste the result of git diff command here...",
+    footerText: "Join the development on GitHub",
+  },
+  ru: {
+    headerDescription:
+      "Преобразуйте свой <code>git diff</code> в готовый промпт для нейросети и сделайте коммит лучше!",
+    gitDiffTitle: "Вывод команды git diff",
+    pasteButton: "Вставить из буфера",
+    clearButton: "Очистить поле",
+    promptTitle: "Сгенерированный промпт для нейросети",
+    copyButton: "Скопировать промпт",
+    downloadButton: "Скачать промпт",
+    themeLabelLight: "Светлая тема",
+    themeLabelDark: "Тёмная тема",
+    gitCommandsTitle: "Команды для получения git diff",
+    copyCommand: "Копировать",
+    toastCopied: "Промпт скопирован в буфер!",
+    toastError: "Не удалось выполнить действие.",
+    toastPasted: "Текст вставлен из буфера!",
+    toastCommandCopied: "Команда скопирована!",
+    placeholder: "Вставьте сюда результат команды git diff...",
+    footerText: "Присоединяйтесь к разработке на GitHub",
+  },
 };
 
-let currentLang = localStorage.getItem('language') || 'uk';
-let promptTemplate = '';
+let currentLang = localStorage.getItem("language") || "uk";
+let promptTemplate = "";
 
-// Функція для зміни мови інтерфейсу
+// Мова
 function setLanguage(lang) {
   currentLang = lang;
-  localStorage.setItem('language', lang);
+  localStorage.setItem("language", lang);
   const t = texts[lang];
 
-  document.getElementById('headerDescription').innerHTML = t.headerDescription;
-  document.getElementById('gitDiffTitle').textContent = t.gitDiffTitle;
+  document.documentElement.lang = lang;
+  document.getElementById("headerDescription").innerHTML = t.headerDescription;
+  document.getElementById("gitDiffTitle").textContent = t.gitDiffTitle;
   pasteButton.textContent = t.pasteButton;
   clearButton.textContent = t.clearButton;
-  document.getElementById('promptTitle').textContent = t.promptTitle;
+  document.getElementById("promptTitle").textContent = t.promptTitle;
   copyButton.textContent = t.copyButton;
   downloadButton.textContent = t.downloadButton;
-  themeLabel.textContent = themeToggle.checked ? t.themeLabelLight : t.themeLabelDark;
-  document.querySelector('.git-commands h3').textContent = t.gitCommandsTitle;
-  document.querySelectorAll('.copyCommandButton').forEach(btn => btn.textContent = t.copyCommand);
+  document.querySelector(".git-commands h3").textContent = t.gitCommandsTitle;
+  document
+    .querySelectorAll(".copyCommandButton")
+    .forEach((btn) => (btn.textContent = t.copyCommand));
   gitDiffInput.placeholder = t.placeholder;
-  document.querySelector('footer p a').textContent = t.footerText;
+  document.querySelector("footer p a").textContent = t.footerText;
+  langSelect.value = lang;
 
-  // Змінюємо активний клас для кнопок мови
-  if (lang === 'uk') {
-    langUk.classList.add('active');
-    langEn.classList.remove('active');
-  } else {
-    langUk.classList.remove('active');
-    langEn.classList.add('active');
-  }
-
-  // Перезавантажуємо шаблон промпту
+  // Оновити лейбл теми згідно з поточним станом
+  setTheme(themeToggle.checked);
+  // Перезавантажити шаблон промпту
   loadPromptTemplate();
 }
 
-// Завантажуємо шаблон промпту з файлу prompt.txt або prompt_en.txt
+// Завантаження шаблону промпту
 function loadPromptTemplate() {
-  const promptFile = currentLang === 'uk' ? 'prompt.txt' : 'prompt_en.txt';
+  let promptFile = "prompt.txt";
+  if (currentLang === "en") promptFile = "prompt_en.txt";
+  if (currentLang === "ru") promptFile = "prompt_ru.txt";
+
   fetch(promptFile)
-    .then(response => response.text())
-    .then(data => {
+    .then((r) => r.text())
+    .then((data) => {
       promptTemplate = data;
       updatePrompt();
     })
-    .catch(error => {
-      console.error('Помилка завантаження промпту:', error);
-    });
+    .catch((err) => console.error("Помилка завантаження промпту:", err));
 }
 
-// Ініціалізація мови при завантаженні сторінки
+// Ініціалізація
 setLanguage(currentLang);
 
-// Додаємо події для перемикачів мови
-langUk.addEventListener('click', () => setLanguage('uk'));
-langEn.addEventListener('click', () => setLanguage('en'));
+// Перемикач мови (select)
+langSelect.addEventListener("change", (e) => setLanguage(e.target.value));
 
-// Функція для екранування HTML, щоб уникнути XSS атак
+// Екранування HTML
 function escapeHTML(str) {
-  return str.replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-// Функція для підсвічування рядків у git diff
+// Підсвічування diff
 function highlightDiff(diff) {
-  const lines = diff.split('\n');
-  return lines.map(line => {
-    if (line.startsWith('+')) {
-      return `<span class="addition">${escapeHTML(line)}</span>`;
-    } else if (line.startsWith('-')) {
-      return `<span class="deletion">${escapeHTML(line)}</span>`;
-    } else {
-      return escapeHTML(line);
-    }
-  }).join('\n');
+  const lines = diff.split("\n");
+  return lines
+    .map((line) => {
+      if (line.startsWith("+++") || line.startsWith("---")) {
+        return escapeHTML(line);
+      } else if (line.startsWith("+")) {
+        return `<span class="addition">${escapeHTML(line)}</span>`;
+      } else if (line.startsWith("-")) {
+        return `<span class="deletion">${escapeHTML(line)}</span>`;
+      } else {
+        return escapeHTML(line);
+      }
+    })
+    .join("\n");
 }
 
-// Функція для очищення введеного користувачем git diff для GitHub Copilot
+// Санітизація для Copilot-підказок
 function sanitizeInput(input) {
   const wordsToSanitize = [
-    '@workspace', '/explain', '/tests', '/fix', '/new', '/newNotebook', '/fixTestFailure', '/setupTests',
-    '@vscode', '/search', '/runCommand', '/startDebugging',
-    '@terminal', '@github', '#selection', '/help', '#codebase', '#editor', '#terminalLastCommand', '#terminalSelection', '#file'
+    "@workspace",
+    "/explain",
+    "/tests",
+    "/fix",
+    "/new",
+    "/newNotebook",
+    "/fixTestFailure",
+    "/setupTests",
+    "@vscode",
+    "/search",
+    "/runCommand",
+    "/startDebugging",
+    "@terminal",
+    "@github",
+    "#selection",
+    "/help",
+    "#codebase",
+    "#editor",
+    "#terminalLastCommand",
+    "#terminalSelection",
+    "#file",
   ];
 
   let sanitized = input;
-  wordsToSanitize.forEach(word => {
-    const regex = new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-    sanitized = sanitized.replace(regex, word.startsWith('/') ? word.slice(1) : word);
+  wordsToSanitize.forEach((word) => {
+    const regex = new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g");
+    sanitized = sanitized.replace(
+      regex,
+      word.startsWith("/") ? word.slice(1) : word
+    );
   });
 
   return sanitized;
 }
 
-// Функція для оновлення промпту на основі введеного користувачем git diff
+// Оновлення промпту
 function updatePrompt() {
   const gitDiff = gitDiffInput.value.trim();
   if (gitDiff === "") {
@@ -160,115 +200,111 @@ function updatePrompt() {
   const filledPrompt = promptTemplate.replace("<diff>", highlightedDiff);
   promptOutput.innerHTML = filledPrompt;
 
-  // Зберігаємо gitDiff у Local Storage
-  localStorage.setItem('gitDiff', gitDiff);
+  localStorage.setItem("gitDiff", gitDiff);
 }
 
-// Слідкуємо за змінами у полі введення і автоматично оновлюємо промт
-gitDiffInput.addEventListener('input', updatePrompt);
+gitDiffInput.addEventListener("input", updatePrompt);
 
-// Відновлюємо gitDiff з Local Storage
-if (localStorage.getItem('gitDiff')) {
-  gitDiffInput.value = localStorage.getItem('gitDiff');
+// Відновлення diff з Local Storage
+if (localStorage.getItem("gitDiff")) {
+  gitDiffInput.value = localStorage.getItem("gitDiff");
   updatePrompt();
 }
 
-// Обробляємо натискання кнопки "Скопіювати промт"
-copyButton.addEventListener('click', async () => {
+// Копіювання промпту
+copyButton.addEventListener("click", async () => {
   const textToCopy = promptOutput.textContent;
-
   try {
     await navigator.clipboard.writeText(textToCopy);
-    showToast(texts[currentLang].toastCopied, 'success');
+    showToast(texts[currentLang].toastCopied, "success");
   } catch (err) {
-    console.error('Не вдалося скопіювати текст: ', err);
-    showToast(texts[currentLang].toastError, 'error');
+    console.error("Не вдалося скопіювати текст: ", err);
+    showToast(texts[currentLang].toastError, "error");
   }
 });
 
-// Обробляємо натискання кнопки "Завантажити промт"
-downloadButton.addEventListener('click', () => {
+// Завантаження промпту
+downloadButton.addEventListener("click", () => {
   const text = promptOutput.textContent;
-  const blob = new Blob([text], { type: 'text/plain' });
+  const blob = new Blob([text], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
 
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
-  a.download = 'prompt.txt';
+  a.download = `prompt_${currentLang}.txt`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 });
 
-// Обробляємо натискання кнопки "Вставити з буфера"
-pasteButton.addEventListener('click', async () => {
+// Вставити з буфера
+pasteButton.addEventListener("click", async () => {
   try {
     const text = await navigator.clipboard.readText();
     gitDiffInput.value = text;
     updatePrompt();
-    showToast(texts[currentLang].toastPasted, 'success');
+    showToast(texts[currentLang].toastPasted, "success");
   } catch (err) {
-    console.error('Не вдалося вставити текст з буфера обміну: ', err);
-    showToast(texts[currentLang].toastError, 'error');
+    console.error("Не вдалося вставити текст з буфера обміну: ", err);
+    showToast(texts[currentLang].toastError, "error");
   }
 });
 
-// Обробляємо натискання кнопки "Очистити поле"
-clearButton.addEventListener('click', () => {
-  gitDiffInput.value = '';
+// Очистити поле
+clearButton.addEventListener("click", () => {
+  gitDiffInput.value = "";
   updatePrompt();
-  localStorage.removeItem('gitDiff');
+  localStorage.removeItem("gitDiff");
 });
 
-// Обробляємо натискання кнопок "Копіювати" для команд git
-copyCommandButtons.forEach(button => {
-  button.addEventListener('click', async () => {
-    const command = button.getAttribute('data-command');
+// Копіювання git-команд
+copyCommandButtons.forEach((button) => {
+  button.addEventListener("click", async () => {
+    const command = button.getAttribute("data-command");
     try {
       await navigator.clipboard.writeText(command);
-      showToast(`${texts[currentLang].toastCommandCopied}`, 'success');
+      showToast(`${texts[currentLang].toastCommandCopied}`, "success");
     } catch (err) {
-      console.error('Не вдалося скопіювати команду: ', err);
-      showToast(texts[currentLang].toastError, 'error');
+      console.error("Не вдалося скопіювати команду: ", err);
+      showToast(texts[currentLang].toastError, "error");
     }
   });
 });
 
-// Тема (темна/світла)
+// Тема
 function setTheme(isDark) {
-  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.documentElement.setAttribute(
+    "data-theme",
+    isDark ? "dark" : "light"
+  );
   themeToggle.checked = isDark;
-  themeLabel.textContent = isDark ? texts[currentLang].themeLabelDark : texts[currentLang].themeLabelLight;
-  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  themeLabel.textContent = isDark
+    ? texts[currentLang].themeLabelDark
+    : texts[currentLang].themeLabelLight;
+  localStorage.setItem("theme", isDark ? "dark" : "light");
 }
 
-// Ініціалізація теми при завантаженні сторінки
-const savedTheme = localStorage.getItem('theme') || 'dark';
-setTheme(savedTheme === 'dark');
+// Ініціалізація теми
+const savedTheme = localStorage.getItem("theme") || "dark";
+setTheme(savedTheme === "dark");
 
-// Обробляємо зміну теми
-themeToggle.addEventListener('change', () => {
-  setTheme(themeToggle.checked);
-});
+// Зміна теми
+themeToggle.addEventListener("change", () => setTheme(themeToggle.checked));
 
-// Функція для показу сповіщення (toast) на екрані
-function showToast(message, type = 'success') {
-  toast.className = 'toast';
+// Toast
+function showToast(message, type = "success") {
+  toast.className = "toast";
 
-  if (type === 'success') {
-    toast.classList.add('success');
-  } else if (type === 'error') {
-    toast.classList.add('error');
-  } else if (type === 'info') {
-    toast.classList.add('info');
-  }
+  if (type === "success") toast.classList.add("success");
+  else if (type === "error") toast.classList.add("error");
+  else if (type === "info") toast.classList.add("info");
 
   toast.innerHTML = message;
-  toast.classList.add('show');
+  toast.classList.add("show");
 
   setTimeout(() => {
-    toast.classList.remove('show');
-    toast.classList.add('hide');
+    toast.classList.remove("show");
+    toast.classList.add("hide");
   }, 3500);
 }

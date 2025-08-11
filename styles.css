@@ -1,454 +1,390 @@
-/* Основні стилі для root та загальних елементів сторінки */
+/* Основні кольори */
 :root {
-    --background-color: #ffffff;
-    --primary-color: #1e88e5;
-    --secondary-color: #000000;
-    --text-color: #000000;
-    --header-footer-bg: #f5f5f5;
-    --border-color: #ccc;
-    --addition-color: #43a047;
-    --deletion-color: #e53935;
-    --button-bg: #1e88e5;
-    --button-hover-bg: #1565c0;
-    --toast-success-bg: #4caf50;
-    --toast-error-bg: #f44336;
-    --toast-info-bg: #2196f3;
-    --toast-text-color: #ffffff;
-    --prompt-bg: #f0f0f0;
+  --background-color: #ffffff;
+  --primary-color: #1e88e5;
+  --secondary-color: #000000;
+  --text-color: #000000;
+  --header-footer-bg: #f5f7fb;
+  --border-color: #d9e1ec;
+  --addition-color: #2e7d32;
+  --deletion-color: #c62828;
+  --button-bg: #1e88e5;
+  --button-hover-bg: #1565c0;
+  --toast-success-bg: #4caf50;
+  --toast-error-bg: #f44336;
+  --toast-info-bg: #2196f3;
+  --toast-text-color: #ffffff;
+  --prompt-bg: #f0f3f8;
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 [data-theme="dark"] {
-    --background-color: #121212;
-    --secondary-color: #ffffff;
-    --text-color: #e0e0e0;
-    --header-footer-bg: #1f1f1f;
-    --border-color: #333;
-    --button-bg: #1e88e5;
-    --button-hover-bg: #1565c0;
-    --toast-success-bg: #4caf50;
-    --toast-error-bg: #f44336;
-    --toast-info-bg: #1e88e5;
-    --toast-text-color: #ffffff;
-    --prompt-bg: #2c2c2c;
+  --background-color: #0f1115;
+  --secondary-color: #ffffff;
+  --text-color: #e0e0e0;
+  --header-footer-bg: #141821;
+  --border-color: #2a3140;
+  --button-bg: #3b82f6;
+  --button-hover-bg: #2563eb;
+  --toast-success-bg: #2e7d32;
+  --toast-error-bg: #b71c1c;
+  --toast-info-bg: #1e88e5;
+  --toast-text-color: #ffffff;
+  --prompt-bg: #111826;
+  --card-bg: rgba(20, 24, 33, 0.7);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
-/* Стилі для усього документа */
+/* Базові стилі */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-html, body {
-    height: 100%;
-    overflow: hidden;
+html,
+body {
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    line-height: 1.6;
+  font-family: "Inter", sans-serif;
+  background: radial-gradient(
+      1200px 600px at 10% -20%,
+      rgba(30, 136, 229, 0.12),
+      transparent
+    ),
+    radial-gradient(
+      1200px 600px at 90% 120%,
+      rgba(60, 130, 246, 0.12),
+      transparent
+    ),
+    var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-header, footer {
-    text-align: center;
-    padding: 20px;
-    background-color: var(--header-footer-bg);
-    flex: 0 0 auto;
+header,
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: var(--header-footer-bg);
+  flex: 0 0 auto;
+  backdrop-filter: saturate(1.2) blur(6px);
+  box-shadow: var(--shadow);
 }
 
-/* Заголовок на сторінці */
+/* Header */
 header h1 {
-    font-weight: 600;
-    font-size: 2rem;
-    margin-bottom: 10px;
-    color: var(--primary-color);
+  font-weight: 600;
+  font-size: 2rem;
+  color: var(--primary-color);
 }
 
 .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
 }
 
-.language-switcher button {
-    background: none;
-    border: none;
-    color: var(--text-color);
-    font-size: 1rem;
-    cursor: pointer;
-    margin-left: 10px;
-    transition: color 0.3s;
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 
-.language-switcher button.active {
-    font-weight: bold;
-    color: var(--primary-color);
-}
-
-.language-switcher button:hover {
-    color: var(--primary-color);
+.language-switcher select {
+  appearance: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  box-shadow: var(--shadow);
 }
 
 .theme-switcher {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
-    margin-right: 10px;
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
 }
 
 .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
 .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 24px;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #94a3b8;
+  transition: 0.3s;
+  border-radius: 24px;
 }
 
 .slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
 }
 
 input:checked + .slider {
-    background-color: var(--primary-color);
+  background-color: var(--primary-color);
 }
-
 input:checked + .slider:before {
-    transform: translateX(26px);
+  transform: translateX(26px);
 }
 
 #themeLabel {
-    font-size: 1rem;
-    color: var(--text-color);
+  font-size: 0.95rem;
+  color: var(--text-color);
 }
-
 header p {
-    font-size: 1rem;
-    color: var(--text-color);
+  font-size: 1rem;
+  color: var(--text-color);
 }
 
-/* Основний контент */
+/* Контент */
 main {
-    flex: 1 1 auto;
-    display: flex;
-    background-color: var(--header-footer-bg);
-    overflow: hidden;
+  flex: 1 1 auto;
+  display: flex;
+  background-color: transparent;
+  overflow: hidden;
+  gap: 16px;
+  padding: 16px;
 }
-
 .split {
-    flex: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
 }
-
 .left {
-    border-right: 1px solid var(--border-color);
-    background-color: var(--header-footer-bg);
 }
-
 .right {
-    position: relative;
-    background-color: var(--header-footer-bg);
+  position: relative;
 }
 
 h2 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    color: var(--primary-color);
-    flex: 0 0 auto;
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  color: var(--primary-color);
+  flex: 0 0 auto;
+}
+
+.textarea-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.textarea-controls button,
+.git-commands .copyCommandButton,
+.prompt-buttons button {
+  padding: 10px 14px;
+  background-color: var(--button-bg);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.textarea-controls button:hover,
+.git-commands .copyCommandButton:hover,
+.prompt-buttons button:hover {
+  background-color: var(--button-hover-bg);
+  transform: translateY(-1px);
 }
 
 textarea {
-    flex: 1 1 auto;
-    padding: 15px;
-    font-size: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    resize: none;
-    background-color: var(--prompt-bg);
-    color: var(--text-color);
-    font-family: 'Courier New', Courier, monospace;
-    overflow-y: auto;
+  flex: 1 1 auto;
+  padding: 14px;
+  font-size: 0.98rem;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  resize: none;
+  background-color: var(--prompt-bg);
+  color: var(--text-color);
+  font-family: "Courier New", Courier, monospace;
+  overflow-y: auto;
 }
 
 textarea::placeholder {
-    color: #888;
+  color: #8a94a7;
 }
 
 textarea:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 5px var(--primary-color);
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.15);
 }
 
-/* Стилі для textarea controls */
-.textarea-controls {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.textarea-controls button {
-    padding: 10px 15px;
-    background-color: var(--button-bg);
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s, transform 0.2s;
-    flex: 1;
-}
-
-.textarea-controls button:hover {
-    background-color: var(--button-hover-bg);
-    transform: scale(1.05);
-}
-
-/* Стиль для git commands */
+/* Git commands */
 .git-commands {
-    margin-top: 15px;
+  margin-top: 12px;
 }
-
 .git-commands h3 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: var(--primary-color);
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+  color: var(--primary-color);
 }
-
 .git-commands .command {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
 }
-
 .git-commands code {
-    background-color: var(--prompt-bg);
-    padding: 5px 10px;
-    border-radius: 6px;
-    margin-right: 10px;
-    flex: 1;
-    color: var(--text-color);
+  background-color: var(--prompt-bg);
+  padding: 5px 10px;
+  border-radius: 8px;
+  flex: 1;
+  color: var(--text-color);
 }
 
-.git-commands .copyCommandButton {
-    padding: 6px 12px;
-    background-color: var(--button-bg);
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.git-commands .copyCommandButton:hover {
-    background-color: var(--button-hover-bg);
-    transform: scale(1.05);
-}
-
-/* Стиль для контейнера промпту */
+/* Промпт-контейнер */
 .prompt-container {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    background-color: var(--prompt-bg);
-    border-radius: 6px;
-    margin-bottom: 15px;
-    padding: 15px;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  background-color: var(--prompt-bg);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  padding: 14px;
+  border: 1px solid var(--border-color);
 }
 
 .prompt {
-    color: var(--text-color);
-    font-family: 'Courier New', Courier, monospace;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    min-height: 100px;
+  color: var(--text-color);
+  font-family: "Courier New", Courier, monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  min-height: 100px;
 }
 
 .prompt .addition {
-    color: var(--addition-color);
+  color: var(--addition-color);
 }
-
 .prompt .deletion {
-    color: var(--deletion-color);
+  color: var(--deletion-color);
 }
 
-/* Стиль для кнопок промпту */
+/* Кнопки праворуч */
 .prompt-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
 }
-
 .prompt-buttons button {
-    padding: 12px 25px;
-    background-color: var(--button-bg);
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s, transform 0.2s;
-    flex: 1;
-    max-width: 200px;
+  flex: 1;
+  max-width: 220px;
 }
 
-.prompt-buttons button:hover {
-    background-color: var(--button-hover-bg);
-    transform: scale(1.05);
-}
-
+/* Footer */
 footer p {
-    font-size: 0.9rem;
-    color: #bbb;
+  font-size: 0.9rem;
+  color: #9aa5b1;
 }
-
 footer a {
-    color: var(--secondary-color);
-    text-decoration: none;
-    font-weight: 600;
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-weight: 600;
 }
-
 footer a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
-/* Сповіщення */
+/* Toast */
 .toast {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: var(--toast-info-bg);
-    color: var(--toast-text-color);
-    padding: 15px 20px;
-    border-radius: 8px;
-    font-size: 1rem;
-    opacity: 0;
-    transform: translateY(-50px) scale(0.9);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    z-index: 1000;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    pointer-events: none;
-    display: flex;
-    align-items: center;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: var(--toast-info-bg);
+  color: var(--toast-text-color);
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  opacity: 0;
+  transform: translateY(-50px) scale(0.95);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  z-index: 1000;
+  box-shadow: var(--shadow);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
 }
-
 .toast.show {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    animation: fadeInUp 0.5s forwards;
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
-
 .toast.hide {
-    opacity: 0;
-    transform: translateY(-50px) scale(0.9);
-    animation: fadeOutDown 0.5s forwards;
+  opacity: 0;
+  transform: translateY(-50px) scale(0.95);
 }
-
-.toast .icon {
-    margin-right: 10px;
-    font-size: 1.2rem;
-}
-
 .toast.success {
-    background-color: var(--toast-success-bg);
-    color: var(--toast-text-color);
+  background-color: var(--toast-success-bg);
 }
-
 .toast.error {
-    background-color: var(--toast-error-bg);
-    color: var(--toast-text-color);
+  background-color: var(--toast-error-bg);
 }
-
 .toast.info {
-    background-color: var(--toast-info-bg);
-    color: var(--toast-text-color);
+  background-color: var(--toast-info-bg);
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(-20px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-@keyframes fadeOutDown {
-    from {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-20px) scale(0.95);
-    }
-}
-
-@media (max-width: 768px) {
-    main {
-        flex-direction: column;
-    }
-
-    .split {
-        width: 100%;
-        height: 50vh;
-    }
-
-    .left {
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .prompt-buttons {
-        flex-direction: column;
-    }
-
-    .prompt-buttons button {
-        max-width: 100%;
-        width: 100%;
-    }
-
-    .textarea-controls {
-        flex-direction: column;
-    }
-
-    .textarea-controls button {
-        width: 100%;
-    }
+@media (max-width: 900px) {
+  main {
+    flex-direction: column;
+  }
+  .split {
+    width: 100%;
+    height: 50vh;
+  }
+  .prompt-buttons {
+    flex-direction: column;
+  }
+  .prompt-buttons button {
+    max-width: 100%;
+    width: 100%;
+  }
+  .textarea-controls {
+    flex-direction: column;
+  }
+  .textarea-controls button {
+    width: 100%;
+  }
 }
