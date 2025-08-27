@@ -39,7 +39,7 @@
                     <h3>Команди для отримання git diff</h3>
                     <div class="command">
                         <code>[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false); git --no-pager diff --staged --color=never | Out-File -FilePath .\diff-staged.patch -Encoding utf8</code>
-                        <button class="copyCommandButton" data-command="git diff">Копіювати</button>
+                        <button class="copyCommandButton" data-command="[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false); git --no-pager diff --staged --color=never | Out-File -FilePath .\diff-staged.patch -Encoding utf8">Копіювати</button>
                     </div>
                     <div class="command">
                         <code>git diff --staged</code>
