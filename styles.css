@@ -1,454 +1,575 @@
-/* Основні стилі для root та загальних елементів сторінки */
+/* Vercel-style Design System */
 :root {
-    --background-color: #ffffff;
-    --primary-color: #1e88e5;
-    --secondary-color: #000000;
-    --text-color: #000000;
-    --header-footer-bg: #f5f5f5;
-    --border-color: #ccc;
-    --addition-color: #43a047;
-    --deletion-color: #e53935;
-    --button-bg: #1e88e5;
-    --button-hover-bg: #1565c0;
-    --toast-success-bg: #4caf50;
-    --toast-error-bg: #f44336;
-    --toast-info-bg: #2196f3;
-    --toast-text-color: #ffffff;
-    --prompt-bg: #f0f0f0;
+  --background: #ffffff;
+  --foreground: #000000;
+  --muted: #fafafa;
+  --muted-foreground: #666666;
+  --border: #eaeaea;
+  --input-bg: #fafafa;
+  --card-bg: #ffffff;
+  --primary: #000000;
+  --primary-hover: #171717;
+  --secondary: #666666;
+  --accent: #0070f3;
+  --accent-hover: #0060df;
+  --success: #0070f3;
+  --error: #e00;
+  --addition-color: #00e676;
+  --deletion-color: #ff1744;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --radius: 8px;
+  --radius-lg: 12px;
 }
 
 [data-theme="dark"] {
-    --background-color: #121212;
-    --secondary-color: #ffffff;
-    --text-color: #e0e0e0;
-    --header-footer-bg: #1f1f1f;
-    --border-color: #333;
-    --button-bg: #1e88e5;
-    --button-hover-bg: #1565c0;
-    --toast-success-bg: #4caf50;
-    --toast-error-bg: #f44336;
-    --toast-info-bg: #1e88e5;
-    --toast-text-color: #ffffff;
-    --prompt-bg: #2c2c2c;
+  --background: #000000;
+  --foreground: #ffffff;
+  --muted: #111111;
+  --muted-foreground: #888888;
+  --border: #333333;
+  --input-bg: #0a0a0a;
+  --card-bg: #111111;
+  --primary: #ffffff;
+  --primary-hover: #e5e5e5;
+  --secondary: #888888;
+  --accent: #0070f3;
+  --accent-hover: #3291ff;
+  --success: #0070f3;
+  --error: #ff1744;
+  --addition-color: #00e676;
+  --deletion-color: #ff1744;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.7);
 }
 
-/* Стилі для усього документа */
+/* Загальні стилі */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-html, body {
-    height: 100%;
-    overflow: hidden;
+html,
+body {
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
-header, footer {
-    text-align: center;
-    padding: 20px;
-    background-color: var(--header-footer-bg);
-    flex: 0 0 auto;
-}
-
-/* Заголовок на сторінці */
-header h1 {
-    font-weight: 600;
-    font-size: 2rem;
-    margin-bottom: 10px;
-    color: var(--primary-color);
+/* Header стилі */
+header {
+  padding: 24px 32px;
+  background-color: var(--background);
+  border-bottom: 1px solid var(--border);
+  flex: 0 0 auto;
 }
 
 .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
 }
 
-.language-switcher button {
-    background: none;
-    border: none;
-    color: var(--text-color);
-    font-size: 1rem;
-    cursor: pointer;
-    margin-left: 10px;
-    transition: color 0.3s;
+header h1 {
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--foreground);
+  letter-spacing: -0.05em;
 }
 
-.language-switcher button.active {
-    font-weight: bold;
-    color: var(--primary-color);
+#headerDescription {
+  font-size: 0.95rem;
+  color: var(--muted-foreground);
+  margin: 0;
 }
 
-.language-switcher button:hover {
-    color: var(--primary-color);
+#headerDescription code {
+  background-color: var(--muted);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  border: 1px solid var(--border);
+  font-family: "Menlo", "Monaco", "Courier New", monospace;
 }
 
+/* Theme Switcher */
 .theme-switcher {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
-    margin-right: 10px;
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 28px;
 }
 
 .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
 .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 24px;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--muted);
+  border: 1px solid var(--border);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 28px;
 }
 
 .slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--foreground);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
 }
 
 input:checked + .slider {
-    background-color: var(--primary-color);
+  background-color: var(--muted);
 }
 
 input:checked + .slider:before {
-    transform: translateX(26px);
+  transform: translateX(20px);
+}
+
+.switch:hover .slider {
+  border-color: var(--foreground);
 }
 
 #themeLabel {
-    font-size: 1rem;
-    color: var(--text-color);
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  font-weight: 500;
 }
 
-header p {
-    font-size: 1rem;
-    color: var(--text-color);
-}
-
-/* Основний контент */
+/* Main контент */
 main {
-    flex: 1 1 auto;
-    display: flex;
-    background-color: var(--header-footer-bg);
-    overflow: hidden;
+  flex: 1 1 auto;
+  display: flex;
+  gap: 1px;
+  background-color: var(--border);
+  overflow: hidden;
 }
 
 .split {
-    flex: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  flex: 1;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--background);
 }
 
 .left {
-    border-right: 1px solid var(--border-color);
-    background-color: var(--header-footer-bg);
+  background-color: var(--background);
 }
 
 .right {
-    position: relative;
-    background-color: var(--header-footer-bg);
+  background-color: var(--background);
 }
 
 h2 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    color: var(--primary-color);
-    flex: 0 0 auto;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--foreground);
+  letter-spacing: -0.025em;
+  flex: 0 0 auto;
 }
 
+/* Textarea стилі */
 textarea {
-    flex: 1 1 auto;
-    padding: 15px;
-    font-size: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    resize: none;
-    background-color: var(--prompt-bg);
-    color: var(--text-color);
-    font-family: 'Courier New', Courier, monospace;
-    overflow-y: auto;
+  flex: 1 1 auto;
+  padding: 16px;
+  font-size: 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  resize: none;
+  background-color: var(--input-bg);
+  color: var(--foreground);
+  font-family: "Menlo", "Monaco", "Courier New", monospace;
+  overflow-y: auto;
+  transition: all 0.2s ease;
+  line-height: 1.5;
 }
 
 textarea::placeholder {
-    color: #888;
+  color: var(--muted-foreground);
 }
 
 textarea:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 5px var(--primary-color);
+  outline: none;
+  border-color: var(--foreground);
+  box-shadow: 0 0 0 1px var(--foreground);
 }
 
-/* Стилі для textarea controls */
+/* Textarea controls */
 .textarea-controls {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
 .textarea-controls button {
-    padding: 10px 15px;
-    background-color: var(--button-bg);
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s, transform 0.2s;
-    flex: 1;
+  padding: 8px 16px;
+  background-color: var(--primary);
+  color: var(--background);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  flex: 1;
+  font-family: inherit;
 }
 
 .textarea-controls button:hover {
-    background-color: var(--button-hover-bg);
-    transform: scale(1.05);
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
-/* Стиль для git commands */
+.textarea-controls button:active {
+  transform: translateY(0);
+}
+
+/* Git commands */
 .git-commands {
-    margin-top: 15px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
 }
 
 .git-commands h3 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: var(--primary-color);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .git-commands .command {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 12px;
+  gap: 8px;
 }
 
 .git-commands code {
-    background-color: var(--prompt-bg);
-    padding: 5px 10px;
-    border-radius: 6px;
-    margin-right: 10px;
-    flex: 1;
-    color: var(--text-color);
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: var(--radius);
+  flex: 1;
+  color: var(--foreground);
+  font-family: "Menlo", "Monaco", "Courier New", monospace;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: nowrap;
+  display: block;
+}
+
+.git-commands code::-webkit-scrollbar {
+  height: 6px;
+}
+
+.git-commands code::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 3px;
+}
+
+.git-commands code::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.git-commands code::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
 }
 
 .git-commands .copyCommandButton {
-    padding: 6px 12px;
-    background-color: var(--button-bg);
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s, transform 0.2s;
+  padding: 12px 20px;
+  background-color: var(--card-bg);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  font-family: inherit;
 }
 
 .git-commands .copyCommandButton:hover {
-    background-color: var(--button-hover-bg);
-    transform: scale(1.05);
+  background-color: var(--muted);
+  border-color: var(--foreground);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
-/* Стиль для контейнера промпту */
+.git-commands .copyCommandButton:active {
+  transform: translateY(0);
+}
+
+/* Prompt контейнер */
 .prompt-container {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    background-color: var(--prompt-bg);
-    border-radius: 6px;
-    margin-bottom: 15px;
-    padding: 15px;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  padding: 16px;
 }
 
 .prompt {
-    color: var(--text-color);
-    font-family: 'Courier New', Courier, monospace;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    min-height: 100px;
+  color: var(--foreground);
+  font-family: "Menlo", "Monaco", "Courier New", monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  min-height: 100px;
+  font-size: 0.875rem;
+  line-height: 1.6;
 }
 
 .prompt .addition {
-    color: var(--addition-color);
+  color: var(--addition-color);
+  font-weight: 500;
 }
 
 .prompt .deletion {
-    color: var(--deletion-color);
+  color: var(--deletion-color);
+  font-weight: 500;
 }
 
-/* Стиль для кнопок промпту */
+/* Prompt кнопки */
 .prompt-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
+  display: flex;
+  gap: 8px;
 }
 
 .prompt-buttons button {
-    padding: 12px 25px;
-    background-color: var(--button-bg);
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s, transform 0.2s;
-    flex: 1;
-    max-width: 200px;
+  padding: 10px 20px;
+  background-color: var(--primary);
+  color: var(--background);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  flex: 1;
+  font-family: inherit;
 }
 
 .prompt-buttons button:hover {
-    background-color: var(--button-hover-bg);
-    transform: scale(1.05);
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.prompt-buttons button:active {
+  transform: translateY(0);
+}
+
+/* Footer */
+footer {
+  padding: 24px 32px;
+  text-align: center;
+  background-color: var(--background);
+  border-top: 1px solid var(--border);
+  flex: 0 0 auto;
 }
 
 footer p {
-    font-size: 0.9rem;
-    color: #bbb;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
 }
 
 footer a {
-    color: var(--secondary-color);
-    text-decoration: none;
-    font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 footer a:hover {
-    text-decoration: underline;
+  color: var(--accent-hover);
+  text-decoration: underline;
 }
 
-/* Сповіщення */
+/* Toast сповіщення */
 .toast {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: var(--toast-info-bg);
-    color: var(--toast-text-color);
-    padding: 15px 20px;
-    border-radius: 8px;
-    font-size: 1rem;
-    opacity: 0;
-    transform: translateY(-50px) scale(0.9);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    z-index: 1000;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    pointer-events: none;
-    display: flex;
-    align-items: center;
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  background-color: var(--card-bg);
+  color: var(--foreground);
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  box-shadow: var(--shadow-lg);
+  pointer-events: none;
+  border: 1px solid var(--border);
+  font-weight: 500;
+  max-width: 400px;
 }
 
 .toast.show {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    animation: fadeInUp 0.5s forwards;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .toast.hide {
-    opacity: 0;
-    transform: translateY(-50px) scale(0.9);
-    animation: fadeOutDown 0.5s forwards;
-}
-
-.toast .icon {
-    margin-right: 10px;
-    font-size: 1.2rem;
+  opacity: 0;
+  transform: translateY(-20px);
 }
 
 .toast.success {
-    background-color: var(--toast-success-bg);
-    color: var(--toast-text-color);
+  background-color: var(--success);
+  color: #ffffff;
+  border-color: var(--success);
 }
 
 .toast.error {
-    background-color: var(--toast-error-bg);
-    color: var(--toast-text-color);
+  background-color: var(--error);
+  color: #ffffff;
+  border-color: var(--error);
 }
 
 .toast.info {
-    background-color: var(--toast-info-bg);
-    color: var(--toast-text-color);
+  background-color: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(-20px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+/* Scrollbar стилізація */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-@keyframes fadeOutDown {
-    from {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-20px) scale(0.95);
-    }
+::-webkit-scrollbar-track {
+  background: var(--muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* Responsive дизайн */
+@media (max-width: 1024px) {
+  main {
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .split {
+    padding: 24px;
+  }
+
+  .container {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
-    main {
-        flex-direction: column;
-    }
+  header {
+    padding: 20px;
+  }
 
-    .split {
-        width: 100%;
-        height: 50vh;
-    }
+  .header-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
 
-    .left {
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-    }
+  header h1 {
+    font-size: 1.5rem;
+  }
 
-    .prompt-buttons {
-        flex-direction: column;
-    }
+  .split {
+    padding: 20px;
+  }
 
-    .prompt-buttons button {
-        max-width: 100%;
-        width: 100%;
-    }
+  h2 {
+    font-size: 1.125rem;
+  }
 
-    .textarea-controls {
-        flex-direction: column;
-    }
+  .prompt-buttons {
+    flex-direction: column;
+  }
 
-    .textarea-controls button {
-        width: 100%;
-    }
+  .textarea-controls {
+    flex-direction: column;
+  }
+
+  .git-commands .command {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .git-commands code {
+    margin-bottom: 8px;
+    font-size: 0.7rem;
+  }
+
+  footer {
+    padding: 20px;
+  }
+
+  .toast {
+    right: 16px;
+    left: 16px;
+    max-width: none;
+  }
 }

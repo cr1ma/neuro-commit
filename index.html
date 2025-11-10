@@ -1,68 +1,114 @@
 <!DOCTYPE html>
 <html lang="uk">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>NeuroCommit</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Підключення шрифтів та стилів -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <div class="header-top">
-                <h1>NeuroCommit</h1>
-                <div class="language-switcher">
-                    <button id="langUk" class="active">УКР</button>
-                    <button id="langEn">ENG</button>
-                </div>
-                <div class="theme-switcher">
-                    <label class="switch">
-                        <input type="checkbox" id="themeToggle">
-                        <span class="slider"></span>
-                    </label>
-                    <span id="themeLabel">Темна тема</span>
-                </div>
+      <header>
+        <div class="header-top">
+          <h1>NeuroCommit</h1>
+          <div class="theme-switcher">
+            <span id="themeLabel">Темна тема</span>
+            <label class="switch">
+              <input type="checkbox" id="themeToggle" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+        <p id="headerDescription">
+          Перетворіть свій <code>git diff</code> у готовий промт для нейромережі
+          та зробіть свій коміт кращим!
+        </p>
+      </header>
+      <main>
+        <div class="split left">
+          <h2 id="gitDiffTitle">Вивід команди git diff</h2>
+          <div class="textarea-controls">
+            <button id="pasteButton">Вставити</button>
+            <button id="clearButton">Очистити</button>
+          </div>
+          <textarea
+            id="gitDiffInput"
+            placeholder="Вставте сюди результат команди git diff..."
+          ></textarea>
+          <div class="git-commands">
+            <h3>Команди для отримання git diff</h3>
+            <div class="command">
+              <code
+                >[Console]::OutputEncoding =
+                [System.Text.UTF8Encoding]::new($false); git --no-pager diff
+                --staged --color=never -- . ':(glob,exclude)**/uv.lock'
+                ':(glob,exclude)**/pnpm-lock.yaml'
+                ':(glob,exclude)**/package-lock.json'
+                ':(glob,exclude)**/npm-shrinkwrap.json'
+                ':(glob,exclude)**/yarn.lock' ':(glob,exclude)**/bun.lockb'
+                ':(glob,exclude)**/poetry.lock' ':(glob,exclude)**/Pipfile.lock'
+                ':(glob,exclude)**/Cargo.lock' ':(glob,exclude)**/go.sum'
+                ':(glob,exclude)**/Gemfile.lock'
+                ':(glob,exclude)**/composer.lock' ':(glob,exclude)**/mix.lock'
+                ':(glob,exclude)**/pubspec.lock'
+                ':(glob,exclude)**/packages.lock.json'
+                ':(glob,exclude)**/Package.resolved'
+                ':(glob,exclude)**/Podfile.lock'
+                ':(glob,exclude)**/Cartfile.resolved'
+                ':(glob,exclude)**/deno.lock' ':(glob,exclude)**/flake.lock' |
+                Out-File -FilePath .\diff-staged.patch -Encoding utf8; $locks =
+                git --no-pager diff --staged --name-status --
+                ':(glob)**/uv.lock' ':(glob)**/pnpm-lock.yaml'
+                ':(glob)**/package-lock.json' ':(glob)**/npm-shrinkwrap.json'
+                ':(glob)**/yarn.lock' ':(glob)**/bun.lockb'
+                ':(glob)**/poetry.lock' ':(glob)**/Pipfile.lock'
+                ':(glob)**/Cargo.lock' ':(glob)**/go.sum'
+                ':(glob)**/Gemfile.lock' ':(glob)**/composer.lock'
+                ':(glob)**/mix.lock' ':(glob)**/pubspec.lock'
+                ':(glob)**/packages.lock.json' ':(glob)**/Package.resolved'
+                ':(glob)**/Podfile.lock' ':(glob)**/Cartfile.resolved'
+                ':(glob)**/deno.lock' ':(glob)**/flake.lock'; if ($locks) {
+                Add-Content -Path .\diff-staged.patch -Encoding utf8
+                "`r`n$locks" }</code
+              >
+              <button
+                class="copyCommandButton"
+                data-command="[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false); git --no-pager diff --staged --color=never -- . ':(glob,exclude)**/uv.lock' ':(glob,exclude)**/pnpm-lock.yaml' ':(glob,exclude)**/package-lock.json' ':(glob,exclude)**/npm-shrinkwrap.json' ':(glob,exclude)**/yarn.lock' ':(glob,exclude)**/bun.lockb' ':(glob,exclude)**/poetry.lock' ':(glob,exclude)**/Pipfile.lock' ':(glob,exclude)**/Cargo.lock' ':(glob,exclude)**/go.sum' ':(glob,exclude)**/Gemfile.lock' ':(glob,exclude)**/composer.lock' ':(glob,exclude)**/mix.lock' ':(glob,exclude)**/pubspec.lock' ':(glob,exclude)**/packages.lock.json' ':(glob,exclude)**/Package.resolved' ':(glob,exclude)**/Podfile.lock' ':(glob,exclude)**/Cartfile.resolved' ':(glob,exclude)**/deno.lock' ':(glob,exclude)**/flake.lock' | Out-File -FilePath .\diff-staged.patch -Encoding utf8; $locks = git --no-pager diff --staged --name-status -- ':(glob)**/uv.lock' ':(glob)**/pnpm-lock.yaml' ':(glob)**/package-lock.json' ':(glob)**/npm-shrinkwrap.json' ':(glob)**/yarn.lock' ':(glob)**/bun.lockb' ':(glob)**/poetry.lock' ':(glob)**/Pipfile.lock' ':(glob)**/Cargo.lock' ':(glob)**/go.sum' ':(glob)**/Gemfile.lock' ':(glob)**/composer.lock' ':(glob)**/mix.lock' ':(glob)**/pubspec.lock' ':(glob)**/packages.lock.json' ':(glob)**/Package.resolved' ':(glob)**/Podfile.lock' ':(glob)**/Cartfile.resolved' ':(glob)**/deno.lock' ':(glob)**/flake.lock'; if ($locks) { Add-Content -Path .\diff-staged.patch -Encoding utf8 &quot;`r`n$locks&quot; }"
+              >
+                Копіювати
+              </button>
             </div>
-            <p id="headerDescription">Перетворіть свій <code>diff</code> у готовий промт для нейромережі та зробіть свій коміт кращим!</p>
-        </header>
-        <main>
-            <div class="split left">
-                <h2 id="gitDiffTitle">Вивід команди git diff</h2>
-                <div class="textarea-controls">
-                    <button id="pasteButton">Вставити з буфера</button>
-                    <button id="clearButton">Очистити поле</button>
-                </div>
-                <textarea id="gitDiffInput" placeholder="Вставте сюди результат команди git diff..."></textarea>
-                <div class="git-commands">
-                    <h3>Команди для отримання git diff</h3>
-                    <div class="command">
-                        <code>[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false); git --no-pager diff --staged --color=never -- . ':(glob,exclude)**/uv.lock' ':(glob,exclude)**/pnpm-lock.yaml' ':(glob,exclude)**/package-lock.json' ':(glob,exclude)**/npm-shrinkwrap.json' ':(glob,exclude)**/yarn.lock' ':(glob,exclude)**/bun.lockb' ':(glob,exclude)**/poetry.lock' ':(glob,exclude)**/Pipfile.lock' ':(glob,exclude)**/Cargo.lock' ':(glob,exclude)**/go.sum' ':(glob,exclude)**/Gemfile.lock' ':(glob,exclude)**/composer.lock' ':(glob,exclude)**/mix.lock' ':(glob,exclude)**/pubspec.lock' ':(glob,exclude)**/packages.lock.json' ':(glob,exclude)**/Package.resolved' ':(glob,exclude)**/Podfile.lock' ':(glob,exclude)**/Cartfile.resolved' ':(glob,exclude)**/deno.lock' ':(glob,exclude)**/flake.lock' | Out-File -FilePath .\diff-staged.patch -Encoding utf8; $locks = git --no-pager diff --staged --name-status -- ':(glob)**/uv.lock' ':(glob)**/pnpm-lock.yaml' ':(glob)**/package-lock.json' ':(glob)**/npm-shrinkwrap.json' ':(glob)**/yarn.lock' ':(glob)**/bun.lockb' ':(glob)**/poetry.lock' ':(glob)**/Pipfile.lock' ':(glob)**/Cargo.lock' ':(glob)**/go.sum' ':(glob)**/Gemfile.lock' ':(glob)**/composer.lock' ':(glob)**/mix.lock' ':(glob)**/pubspec.lock' ':(glob)**/packages.lock.json' ':(glob)**/Package.resolved' ':(glob)**/Podfile.lock' ':(glob)**/Cartfile.resolved' ':(glob)**/deno.lock' ':(glob)**/flake.lock'; if ($locks) { Add-Content -Path .\diff-staged.patch -Encoding utf8 "`r`n$locks" }</code>
-                        <button class="copyCommandButton" data-command="[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false); git --no-pager diff --staged --color=never -- . ':(glob,exclude)**/uv.lock' ':(glob,exclude)**/pnpm-lock.yaml' ':(glob,exclude)**/package-lock.json' ':(glob,exclude)**/npm-shrinkwrap.json' ':(glob,exclude)**/yarn.lock' ':(glob,exclude)**/bun.lockb' ':(glob,exclude)**/poetry.lock' ':(glob,exclude)**/Pipfile.lock' ':(glob,exclude)**/Cargo.lock' ':(glob,exclude)**/go.sum' ':(glob,exclude)**/Gemfile.lock' ':(glob,exclude)**/composer.lock' ':(glob,exclude)**/mix.lock' ':(glob,exclude)**/pubspec.lock' ':(glob,exclude)**/packages.lock.json' ':(glob,exclude)**/Package.resolved' ':(glob,exclude)**/Podfile.lock' ':(glob,exclude)**/Cartfile.resolved' ':(glob,exclude)**/deno.lock' ':(glob,exclude)**/flake.lock' | Out-File -FilePath .\diff-staged.patch -Encoding utf8; $locks = git --no-pager diff --staged --name-status -- ':(glob)**/uv.lock' ':(glob)**/pnpm-lock.yaml' ':(glob)**/package-lock.json' ':(glob)**/npm-shrinkwrap.json' ':(glob)**/yarn.lock' ':(glob)**/bun.lockb' ':(glob)**/poetry.lock' ':(glob)**/Pipfile.lock' ':(glob)**/Cargo.lock' ':(glob)**/go.sum' ':(glob)**/Gemfile.lock' ':(glob)**/composer.lock' ':(glob)**/mix.lock' ':(glob)**/pubspec.lock' ':(glob)**/packages.lock.json' ':(glob)**/Package.resolved' ':(glob)**/Podfile.lock' ':(glob)**/Cartfile.resolved' ':(glob)**/deno.lock' ':(glob)**/flake.lock'; if ($locks) { Add-Content -Path .\diff-staged.patch -Encoding utf8 &quot;`r`n$locks&quot; }">Копіювати</button>
-                    </div>
-                    <div class="command">
-                        <code>git diff --staged</code>
-                        <button class="copyCommandButton" data-command="git diff --staged">Копіювати</button>
-                    </div>
-                </div>
+            <div class="command">
+              <code>git diff --staged</code>
+              <button
+                class="copyCommandButton"
+                data-command="git diff --staged"
+              >
+                Копіювати
+              </button>
             </div>
-            <div class="split right">
-                <h2 id="promptTitle">Згенерований промт для нейромережі</h2>
-                <div class="prompt-container">
-                    <pre id="promptOutput" class="prompt"></pre>
-                </div>
-                <div class="prompt-buttons">
-                    <button id="copyButton">Скопіювати промт</button>
-                    <button id="downloadButton">Завантажити промт</button>
-                </div>
-            </div>
-        </main>
-        <footer>
-            <p><a href="https://github.com/cr1ma/neuro-commit" target="_blank">Приєднуйтесь до розробки на GitHub</a></p>
-        </footer>
+          </div>
+        </div>
+        <div class="split right">
+          <h2 id="promptTitle">Згенерований промт для нейромережі</h2>
+          <div class="prompt-container">
+            <pre id="promptOutput" class="prompt"></pre>
+          </div>
+          <div class="prompt-buttons">
+            <button id="copyButton">Скопіювати промт</button>
+            <button id="downloadButton">Завантажити промт</button>
+          </div>
+        </div>
+      </main>
+      <footer>
+        <p>
+          <a href="https://github.com/cr1ma/neuro-commit" target="_blank"
+            >Приєднуйтесь до розробки на GitHub</a
+          >
+        </p>
+      </footer>
     </div>
     <div id="toast" class="toast"></div>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
