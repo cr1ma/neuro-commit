@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  A lightweight CLI utility that echoes your input back to the console. Perfect for testing terminal configurations or simply having fun with a responsive command-line interface.
+  A tool for generating high-quality commit messages based on <code>git diff</code>, designed for further use with neural networks.
 </p>
 
 ---
@@ -16,15 +16,11 @@
 
 ### Using npx (No Installation Required)
 
-Run the tool instantly without installing:
-
 ```bash
 npx neuro-commit
 ```
 
 ### Global Installation
-
-Install once and use anywhere:
 
 ```bash
 npm install -g neuro-commit
@@ -38,14 +34,31 @@ neuro-commit
 
 ## 📖 How It Works
 
-1. Launch the application using one of the methods above
-2. Type any message and press Enter
-3. The bot will echo your message back to you
-4. Type `exit` to quit the application
+1. Stage your changes with `git add`
+2. Run `neuro-commit`
+3. Select **Commit** mode from the interactive menu
+4. The tool collects your staged diff, file list and stats
+5. A `neuro-commit.md` file is generated in the current directory with:
+   - Combined file list with statuses (`M`, `A`, `D`, etc.) and per-file stats
+   - Lock file updates mentioned without noisy diffs
+   - Summary of total insertions / deletions
+   - Full diff output in a fenced `diff` code block
+
+> **Note:** Lock files (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `uv.lock`, `Cargo.lock`, etc.) are listed as updated but their diffs are omitted to keep the output clean.
+
+## 🔧 Development
+
+```bash
+# Lint
+npm run lint
+
+# Lint & auto-fix
+npm run lint:fix
+```
 
 ## 📝 License
 
-- **License**: [Apache License 2.0](LICENSE)
+[Apache License 2.0](LICENSE)
 
 ## 🤝 Contributing
 

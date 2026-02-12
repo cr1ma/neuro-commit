@@ -2,6 +2,7 @@
 
 const readline = require("readline");
 const { version } = require("../package.json");
+const { runCommitMode } = require("../src/commit");
 
 const banner = `
 ███╗   ██╗███████╗██╗   ██╗██████╗  ██████╗        ██████╗ ██████╗ ███╗   ███╗███╗   ███╗██╗████████╗
@@ -117,13 +118,6 @@ function showMenu() {
 
     process.stdin.on("keypress", onKeyPress);
   });
-}
-
-function runCommitMode() {
-  console.log(`\n${GREEN}📝 Commit mode selected.${RESET}`);
-  console.log(
-    `${DIM}Commit message generation will be implemented here.${RESET}\n`,
-  );
 }
 
 function runPullRequestMode() {
