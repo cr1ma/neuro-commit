@@ -1,0 +1,29 @@
+{
+  "name": "neuro-commit",
+  "version": "0.0.1",
+  "description": "neuro-commit CLI utility",
+  "author": "cr1ma.dev",
+  "bin": {
+    "neuro-commit": "bin/neuro-commit.js"
+  },
+  "scripts": {
+    "start": "node bin/neuro-commit.js"
+  },
+  "keywords": [
+    "cli",
+    "commit",
+    "neuro"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cr1ma/neuro-commit.git"
+  },
+  "homepage": "https://github.com/cr1ma/neuro-commit#readme",
+  "bugs": {
+    "url": "https://github.com/cr1ma/neuro-commit/issues"
+  },
+  "files": [
+    "bin/"
+  ]
+}
