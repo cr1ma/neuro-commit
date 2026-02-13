@@ -119,6 +119,21 @@ async function main() {
   console.clear();
   console.log(banner);
 
+  try {
+    const { default: updateNotifier } = await import("update-notifier");
+    const pkg = require("../package.json");
+
+    updateNotifier({
+      pkg,
+      updateCheckInterval: 1000 * 60 * 60 * 24,
+    }).notify({
+      defer: false,
+      isGlobal: true,
+    });
+  } catch {
+    // Ignore update check errors
+  }
+
   const choice = await showMenu();
 
   switch (choice) {

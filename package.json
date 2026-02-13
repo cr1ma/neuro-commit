@@ -38,6 +38,7 @@
     "globals": "^17.3.0"
   },
   "dependencies": {
-    "tiktoken": "^1.0.22"
+    "tiktoken": "^1.0.22",
+    "update-notifier": "^7.3.1"
   }
 }
