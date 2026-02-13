@@ -6,8 +6,7 @@ on:
       - "v*"
 
 permissions:
-  # AFTER setting up Trusted Publishing: uncomment the next line
-  # id-token: write
+  id-token: write
   contents: write
 
 jobs:
@@ -38,10 +37,6 @@ jobs:
 
       - name: Publish to npm
         run: npm publish
-        # FOR FIRST PUBLISH: Add NPM_TOKEN to GitHub Secrets and uncomment the next 2 lines
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        # AFTER setting up Trusted Publishing: comment out the env section above
 
       - name: Create GitHub Release
         env:
