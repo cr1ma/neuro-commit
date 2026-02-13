@@ -16,11 +16,6 @@ const banner = `
 // --- Menu options ---
 const menuItems = [
   { label: "Commit", icon: "📝", description: "Generate a commit message" },
-  {
-    label: "Pull / Merge Request",
-    icon: "🔀",
-    description: "Generate a PR / MR description",
-  },
 ];
 
 // --- ANSI helpers ---
@@ -120,13 +115,6 @@ function showMenu() {
   });
 }
 
-function runPullRequestMode() {
-  console.log(`\n${GREEN}🔀 Pull / Merge Request mode selected.${RESET}`);
-  console.log(
-    `${DIM}PR / MR description generation will be implemented here.${RESET}\n`,
-  );
-}
-
 // --- Entry point ---
 async function main() {
   console.clear();
@@ -138,9 +126,6 @@ async function main() {
   switch (choice) {
     case 0:
       runCommitMode();
-      break;
-    case 1:
-      runPullRequestMode();
       break;
   }
 }
