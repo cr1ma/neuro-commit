@@ -135,10 +135,7 @@ function runCommitMode() {
   const outPath = path.resolve(process.cwd(), OUTPUT_FILE);
   fs.writeFileSync(outPath, md, "utf-8");
 
-  console.log(
-    `\n${GREEN}✔${RESET} Written to ${CYAN}${OUTPUT_FILE}${RESET} (${Buffer.byteLength(md)} bytes)`,
-  );
-  console.log(`${DIM}Path: ${outPath}${RESET}\n`);
+  console.log(`\n${GREEN}✔${RESET} Written to ${CYAN}${OUTPUT_FILE}${RESET}`);
 }
 
 module.exports = { runCommitMode };

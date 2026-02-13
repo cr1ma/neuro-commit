@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const readline = require("readline");
-const { version } = require("../package.json");
 const { runCommitMode } = require("../src/commit");
 
 const banner = `
@@ -119,7 +118,6 @@ function showMenu() {
 async function main() {
   console.clear();
   console.log(banner);
-  console.log(`🧠 ${BOLD}neuro-commit${RESET} v${version}\n`);
 
   const choice = await showMenu();
 
