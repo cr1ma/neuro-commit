@@ -1,38 +1,51 @@
 ---
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
-
+name: Bug Report
+about: Report a bug to help us improve neuro-commit
+title: "[Bug] "
+labels: bug
+assignees: ""
 ---
 
-**Describe the bug**
+## Describe the Bug
+
 A clear and concise description of what the bug is.
 
-**To Reproduce**
+## To Reproduce
+
 Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
+
+1. Stage some files with `git add ...`
+2. Run `neuro-commit` (or `npx neuro-commit`)
+3. Select '...' from the menu
 4. See error
 
-**Expected behavior**
+## Expected Behavior
+
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
+## Actual Behavior
+
+What actually happened instead.
+
+## Error Output
+
+```
+Paste any error messages or terminal output here
+```
+
+## Environment
+
+- **OS:** [e.g., Windows 11, macOS 14, Ubuntu 24.04]
+- **Node.js version:** [e.g., 22.0.0] (run `node --version`)
+- **npm version:** [e.g., 10.0.0] (run `npm --version`)
+- **neuro-commit version:** [e.g., 0.1.0] (run `npx neuro-commit --version` or check `package.json`)
+- **Git version:** [e.g., 2.45.0] (run `git --version`)
+- **Installation method:** [global npm install / npx]
+
+## Screenshots
+
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+## Additional Context
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
-**Additional context**
-Add any other context about the problem here.
+Add any other context about the problem here (e.g., repository size, number of staged files, special characters in filenames, etc.).
