@@ -22,11 +22,49 @@ const CYAN = "\x1b[36m";
 const OUTPUT_FILE = "neuro-commit.md";
 const encoder = get_encoding("o200k_base");
 
+// AI Prompt that will be added at the beginning of the generated file
+const AI_PROMPT = `You are an expert in writing commit messages for repositories. Your task is to write me a commit message based on my diff file, which I will provide to you.
+
+### Rules for writing a commit message:
+
+1. Write in English, strictly considering the context.
+2. Return the answer using markdown formatting.
+3. Use the imperative mood, as if you are giving a command to the system that corresponds to messages that create changes in the code.
+4. The first line of the message (title) should be short, usually no longer than 50 characters. This makes it easier to quickly understand the changes. Do not end the title with a period.
+5. Leave one empty line after the title before starting the body of the message. This separation helps Git tools to correctly display the message text.
+6. Commits with messages like "Fix" or "Update" do not provide useful information. Always explain what exactly was fixed or updated.
+7. **Use lowercase letters to describe change types. Use** semantic tags in message titles:
+   - \`feat:\` — adding a new feature
+   - \`fix:\` — bug fixes
+   - \`docs:\` — changes in documentation
+   - \`style:\` — changes that do not affect the code (e.g., formatting fixes)
+   - \`refactor:\` — code change that doesn't add new functionality or fix bugs
+   - \`test:\` — adding or changing tests
+
+### Example of a correct commit message:
+
+\`\`\`diff
+refactor: update environment configuration and API connection
+
+- Edited \`.env\` file to support different environments (production, development) and API connection modes (docker, local, remote).
+- Updated \`config.py\` to load tokens and URLs depending on the environment and API mode.
+- Removed logic for determining the operating system.
+- Updated \`api_client.py\` to use BASE_API_URL instead of OS-specific URLs.
+- Reduced the number of retries in \`_make_request\`.
+\`\`\`
+
+---
+
+`;
+
 /**
  * Build the markdown content for neuro-commit.md
  */
 function buildMarkdown(stagedFiles, diff, numstat) {
   const lines = [];
+
+  // Start with the AI prompt
+  lines.push(AI_PROMPT);
 
   const lockFiles = stagedFiles.filter((f) => isLockFile(f.file));
   const regularFiles = stagedFiles.filter((f) => !isLockFile(f.file));
@@ -103,6 +141,14 @@ function printSummary(files, content, outputFile) {
   console.log(
     `${CYAN}✓${RESET} Generated ${BOLD}${outputFile}${RESET} ${DIM}(${formatNumber(totalFiles)} files, ${formatNumber(totalTokens)} tokens, ${formatNumber(totalChars)} chars)${RESET}`,
   );
+  console.log("");
+  console.log(`${BOLD}Next steps:${RESET}`);
+  console.log(`  1. Open ${CYAN}${outputFile}${RESET}`);
+  console.log(
+    `  2. Copy the ${BOLD}entire content${RESET} (AI prompt is already included!)`,
+  );
+  console.log(`  3. Paste into your LLM (ChatGPT, Claude, etc.)`);
+  console.log(`  4. Get your perfect commit message! 🎉`);
   console.log("");
 }
 
