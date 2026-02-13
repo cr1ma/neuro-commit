@@ -1,12 +1,13 @@
 name: Publish Package
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - "v*"
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 jobs:
   publish:
@@ -15,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -25,7 +28,7 @@ jobs:
       - name: Verify tag matches package version
         run: |
           PKG_VERSION="v$(node -p "require('./package.json').version")"
-          TAG_VERSION="${{ github.event.release.tag_name }}"
+          TAG_VERSION="${GITHUB_REF#refs/tags/}"
           if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
             echo "Version mismatch: package.json ($PKG_VERSION) != tag ($TAG_VERSION)"
             exit 1
@@ -34,3 +37,11 @@ jobs:
 
       - name: Publish to npm
         run: npm publish
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ github.ref_name }} \
+            --title "Release ${{ github.ref_name }}" \
+            --generate-notes
