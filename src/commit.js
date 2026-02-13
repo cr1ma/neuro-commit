@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { get_encoding } = require("tiktoken");
 const {
   getStagedFiles,
   getStagedDiff,
@@ -19,6 +20,7 @@ const RED = "\x1b[31m";
 const CYAN = "\x1b[36m";
 
 const OUTPUT_FILE = "neuro-commit.md";
+const encoder = get_encoding("o200k_base");
 
 /**
  * Build the markdown content for neuro-commit.md
@@ -84,6 +86,26 @@ function buildMarkdown(stagedFiles, diff, numstat) {
   return lines.join("\n");
 }
 
+function estimateTokens(text) {
+  return encoder.encode(text).length;
+}
+
+function formatNumber(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+function printSummary(files, content, outputFile) {
+  const totalFiles = files.length;
+  const totalChars = content.length;
+  const totalTokens = estimateTokens(content);
+
+  console.log("");
+  console.log(
+    `${CYAN}✓${RESET} Generated ${BOLD}${outputFile}${RESET} ${DIM}(${formatNumber(totalFiles)} files, ${formatNumber(totalTokens)} tokens, ${formatNumber(totalChars)} chars)${RESET}`,
+  );
+  console.log("");
+}
+
 /**
  * Run the commit mode — gather staged info and write neuro-commit.md
  */
@@ -105,8 +127,8 @@ function runCommitMode() {
     process.exit(0);
   }
 
-  console.log(`\n${GREEN}📝 Commit mode${RESET}`);
-  console.log(`${DIM}Gathering staged changes (--staged)...${RESET}`);
+  console.log(`\n${BOLD}Commit Mode${RESET}`);
+  console.log(`${DIM}Analyzing staged changes...${RESET}\n`);
 
   const diff = getStagedDiff();
   const numstat = getStagedNumstat();
@@ -114,20 +136,16 @@ function runCommitMode() {
   const lockFiles = stagedFiles.filter((f) => isLockFile(f.file));
   const regularFiles = stagedFiles.filter((f) => !isLockFile(f.file));
 
-  // Print summary to terminal
-  console.log(
-    `\n${BOLD}Staged files:${RESET} ${stagedFiles.length} total (${regularFiles.length} source, ${lockFiles.length} lock)`,
-  );
-
+  // Print file list
   for (const { status, file } of regularFiles) {
     const color = status === "A" ? GREEN : status === "D" ? RED : YELLOW;
     console.log(`  ${color}${statusLabel(status)}${RESET}  ${file}`);
   }
 
   if (lockFiles.length > 0) {
-    console.log(
-      `  ${DIM}🔒 ${lockFiles.map((f) => f.file).join(", ")} (diff omitted)${RESET}`,
-    );
+    for (const { file } of lockFiles) {
+      console.log(`  ${DIM}${statusLabel("M")}  ${file} (lock file)${RESET}`);
+    }
   }
 
   // Generate markdown
@@ -135,7 +153,7 @@ function runCommitMode() {
   const outPath = path.resolve(process.cwd(), OUTPUT_FILE);
   fs.writeFileSync(outPath, md, "utf-8");
 
-  console.log(`\n${GREEN}✔${RESET} Written to ${CYAN}${OUTPUT_FILE}${RESET}`);
+  printSummary(stagedFiles, md, OUTPUT_FILE);
 }
 
 module.exports = { runCommitMode };
