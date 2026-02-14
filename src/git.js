@@ -137,6 +137,129 @@ function getStagedNumstat() {
   }
 }
 
+/**
+ * Get the current branch name.
+ */
+function getCurrentBranch() {
+  try {
+    return execSync("git rev-parse --abbrev-ref HEAD", {
+      encoding: "utf-8",
+      stdio: "pipe",
+    }).trim();
+  } catch {
+    return "unknown";
+  }
+}
+
+/**
+ * Get recent commit messages for context.
+ * @param {number} count - Number of recent commits to retrieve.
+ */
+function getRecentCommits(count = 5) {
+  try {
+    const raw = execSync(
+      `git log --oneline -${count} --no-merges --format="%s"`,
+      {
+        encoding: "utf-8",
+        stdio: "pipe",
+      },
+    ).trim();
+
+    if (!raw) return [];
+    return raw.split("\n").filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Execute a git commit with the given message.
+ * @param {string} message - The commit message.
+ * @returns {{ success: boolean, hash?: string, error?: string }}
+ */
+function gitCommit(message) {
+  try {
+    // Write message to a temp file to avoid shell escaping issues
+    const fs = require("fs");
+    const path = require("path");
+    const os = require("os");
+    const tmpFile = path.join(
+      os.tmpdir(),
+      `neuro-commit-msg-${Date.now()}.txt`,
+    );
+    fs.writeFileSync(tmpFile, message, "utf-8");
+
+    execSync(`git commit -F "${tmpFile}"`, {
+      encoding: "utf-8",
+      stdio: "pipe",
+    });
+
+    // Get the short hash of the new commit
+    const hash = execSync("git rev-parse --short HEAD", {
+      encoding: "utf-8",
+      stdio: "pipe",
+    }).trim();
+
+    // Clean up temp file
+    try {
+      fs.unlinkSync(tmpFile);
+    } catch {
+      // ignore cleanup errors
+    }
+
+    return { success: true, hash };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * Push the current branch to origin.
+ * @returns {{ success: boolean, error?: string }}
+ */
+function gitPush() {
+  try {
+    execSync("git push", {
+      encoding: "utf-8",
+      stdio: "pipe",
+    });
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * Get README content if it exists.
+ */
+function getReadmeContent() {
+  try {
+    const fs = require("fs");
+    const path = require("path");
+    const cwd = process.cwd();
+
+    const readmeNames = [
+      "README.md",
+      "readme.md",
+      "README.MD",
+      "README",
+      "README.txt",
+    ];
+
+    for (const name of readmeNames) {
+      const filePath = path.join(cwd, name);
+      if (fs.existsSync(filePath)) {
+        const content = fs.readFileSync(filePath, "utf-8");
+        // Limit to first 500 chars to avoid bloating the prompt
+        return content.slice(0, 500);
+      }
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 module.exports = {
   getStagedFiles,
   getStagedDiff,
@@ -145,5 +268,10 @@ module.exports = {
   isGitRepo,
   isLockFile,
   statusLabel,
+  getCurrentBranch,
+  getRecentCommits,
+  gitCommit,
+  gitPush,
+  getReadmeContent,
   LOCK_FILE_PATTERNS,
 };

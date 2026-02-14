@@ -8,6 +8,7 @@
   <a href="https://github.com/cr1ma/neuro-commit/blob/main/LICENSE"><img src="https://img.shields.io/github/license/cr1ma/neuro-commit" alt="license"></a>
   <a href="https://github.com/cr1ma/neuro-commit/actions/workflows/publish.yml"><img src="https://github.com/cr1ma/neuro-commit/actions/workflows/publish.yml/badge.svg" alt="publish status"></a>
   <a href="https://github.com/cr1ma/neuro-commit/issues"><img src="https://img.shields.io/github/issues/cr1ma/neuro-commit" alt="open issues"></a>
+  <a href="https://github.com/cr1ma/neuro-commit"><img src="https://img.shields.io/github/stars/cr1ma/neuro-commit" alt="stars"></a>
 </p>
 
 ---
@@ -32,7 +33,7 @@
 ## ✨ Features
 
 - **Zero configuration** — works out of the box with any Git repository
-- **Interactive TUI** — beautiful terminal menu with keyboard navigation
+- **Interactive UI** — beautiful terminal menu with keyboard navigation
 - **Smart lock file handling** — detects lock files (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `Cargo.lock`, etc.) and omits their noisy diffs
 - **Token estimation** — reports estimated token count (using `o200k_base` tokenizer) so you know the prompt size before pasting into an LLM
 - **Structured Markdown output** — generates a `neuro-commit.md` with file list, per-file stats, and full diff
