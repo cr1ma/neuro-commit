@@ -38,7 +38,9 @@
     "globals": "^17.3.0"
   },
   "dependencies": {
+    "latest-version": "^9.0.0",
+    "openai": "^6.22.0",
     "tiktoken": "^1.0.22",
-    "update-notifier": "^7.3.1"
+    "zod": "^4.3.6"
   }
 }

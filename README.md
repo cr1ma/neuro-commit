@@ -8,11 +8,12 @@
   <a href="https://github.com/cr1ma/neuro-commit/blob/main/LICENSE"><img src="https://img.shields.io/github/license/cr1ma/neuro-commit" alt="license"></a>
   <a href="https://github.com/cr1ma/neuro-commit/actions/workflows/publish.yml"><img src="https://github.com/cr1ma/neuro-commit/actions/workflows/publish.yml/badge.svg" alt="publish status"></a>
   <a href="https://github.com/cr1ma/neuro-commit/issues"><img src="https://img.shields.io/github/issues/cr1ma/neuro-commit" alt="open issues"></a>
+  <a href="https://github.com/cr1ma/neuro-commit"><img src="https://img.shields.io/github/stars/cr1ma/neuro-commit" alt="stars"></a>
 </p>
 
 ---
 
-**NeuroCommit** is a zero-config CLI tool that analyzes your staged Git changes and generates a clean, structured Markdown summary — ready to be fed into any AI/LLM for high-quality commit message generation.
+**NeuroCommit** is a CLI tool that analyzes your staged Git changes and generates commit messages — either automatically via OpenAI API or as a structured prompt you can paste into any LLM.
 
 <p align="center">
   <img src="docs/assets/neuro-commit-screenshot.png" alt="NeuroCommit CLI screenshot" width="700">
@@ -23,6 +24,7 @@
 - [Features](#-features)
 - [Quick Start](#-quick-start)
 - [How It Works](#-how-it-works)
+- [Configuration](#-configuration)
 - [Development](#-development)
 - [Contributing](#-contributing)
 - [Security](#-security)
@@ -31,12 +33,14 @@
 
 ## ✨ Features
 
-- **Zero configuration** — works out of the box with any Git repository
-- **Interactive TUI** — beautiful terminal menu with keyboard navigation
-- **Smart lock file handling** — detects lock files (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `Cargo.lock`, etc.) and omits their noisy diffs
-- **Token estimation** — reports estimated token count (using `o200k_base` tokenizer) so you know the prompt size before pasting into an LLM
-- **Structured Markdown output** — generates a `neuro-commit.md` with file list, per-file stats, and full diff
-- **Update notifications** — automatically notifies you when a new version is available
+- **AI Commit mode** — generates and commits messages automatically using OpenAI API (`gpt-5-nano`) with Structured Outputs
+- **Manual mode** — saves a prompt to `neuro-commit.md` for pasting into any LLM (ChatGPT, Claude, etc.)
+- **Conventional Commits** — always uses `feat:`, `fix:`, `docs:`, `refactor:`, etc.
+- **Smart lock file handling** — detects lock files and omits their noisy diffs
+- **Minimal UI** — clean terminal interface, no visual clutter
+- **Multi-language** — commit message body in English, Ukrainian, Russian, German, French, or Spanish
+- **Configurable** — auto-commit, auto-push, commit history context, dev mode
+- **Secure** — API key via environment variable only, no shell injection vectors
 
 ## 🚀 Quick Start
 
@@ -58,20 +62,52 @@ Then run:
 neuro-commit
 ```
 
+### Setting up OpenAI API Key
+
+For AI Commit mode, set your API key:
+
+```bash
+# Linux / macOS
+export OPENAI_API_KEY="sk-..."
+
+# Windows PowerShell
+$env:OPENAI_API_KEY = "sk-..."
+
+# Windows CMD
+set OPENAI_API_KEY=sk-...
+```
+
 ## 📖 How It Works
 
-1. Stage your changes with `git add`
-2. Run `neuro-commit`
-3. Select **Commit** mode from the interactive menu
-4. The tool collects your staged diff, file list, and per-file stats
-5. A `neuro-commit.md` file is generated in the current directory containing:
-   - File list with statuses (`Added`, `Modified`, `Deleted`, etc.) and per-file insertions/deletions
-   - Lock file entries listed without their diffs
-   - Summary line with total files changed, insertions, and deletions
-   - Full diff output in a fenced `diff` code block
-6. Copy the contents of `neuro-commit.md` into your preferred AI assistant and ask it to write a commit message
+### AI Commit Mode
 
-> **Tip:** Lock files (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `uv.lock`, `Cargo.lock`, and others) are listed as changed but their diffs are omitted to keep the output clean and token-efficient.
+1. Stage your changes with `git add`
+2. Run `neuro-commit` → select **AI Commit**
+3. Review the file summary and confirm generation
+4. The tool sends your diff to OpenAI API and generates a commit message
+5. Choose: **Commit**, **Edit**, **Regenerate**, or **Cancel**
+
+### Manual Mode
+
+1. Stage your changes with `git add`
+2. Run `neuro-commit` → select **Manual Mode**
+3. A `neuro-commit.md` file is generated with the full prompt
+4. Paste into your preferred LLM and get a commit message
+
+> Both modes use the same prompt — the only difference is delivery method.
+
+## ⚙️ Configuration
+
+Settings are stored in `~/.neurocommit/config.json`. Access via the **Settings** menu.
+
+| Setting        | Default | Description                            |
+| -------------- | ------- | -------------------------------------- |
+| Language       | `en`    | Commit message body language           |
+| Max length     | `72`    | Title character limit                  |
+| Auto-commit    | `OFF`   | Commit immediately after generation    |
+| Auto-push      | `OFF`   | Push after committing                  |
+| Commit history | `5`     | Recent commits included as AI context  |
+| Dev mode       | `OFF`   | Store API responses (OpenAI dashboard) |
 
 ## 🔧 Development
 
