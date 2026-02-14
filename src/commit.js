@@ -10,7 +10,12 @@ const {
   getCurrentBranch,
   getRecentCommits,
 } = require("./git");
-const { buildFilesInfo, buildSystemPrompt, buildUserPrompt } = require("./ai");
+const {
+  buildFilesInfo,
+  buildSystemPrompt,
+  buildUserPrompt,
+  countTokens,
+} = require("./ai");
 const { loadConfig } = require("./config");
 const {
   RESET,
@@ -75,7 +80,7 @@ function runCommitMode() {
     }
   }
 
-  const tokens = Math.ceil(md.length / 4);
+  const tokens = countTokens(md);
   console.log(
     `\n${GREEN}✓${RESET} Saved to ${BOLD}${OUTPUT_FILE}${RESET} (~${formatNumber(tokens)} tokens)`,
   );

@@ -32,12 +32,32 @@ if (args.includes("--version") || args.includes("-v")) {
 process.on("exit", () => process.stdout.write(SHOW_CURSOR));
 process.on("SIGINT", () => process.exit(0));
 
+/**
+ * Non-blocking version check — runs once, prints hint if outdated.
+ */
+async function checkForUpdate() {
+  try {
+    const { default: latestVersion } = await import("latest-version");
+    const latest = await latestVersion(pkg.name);
+    if (latest && latest !== pkg.version) {
+      console.log(
+        `${DIM}Update available: ${pkg.version} → ${CYAN}${latest}${RESET}${DIM}  (npm i -g ${pkg.name})${RESET}`,
+      );
+    }
+  } catch {
+    // silently ignore network errors
+  }
+}
+
 async function main() {
   while (true) {
     console.clear();
     console.log(
       `\n${BOLD}neuro-commit${RESET} ${DIM}v${pkg.version}${RESET}\n`,
     );
+
+    // fire-and-forget update check (only first iteration matters visually)
+    checkForUpdate();
 
     const choice = await showSelectMenu("Mode:", [
       { label: "AI Commit", description: "generate & commit" },
@@ -49,7 +69,13 @@ async function main() {
       case 0: {
         if (!isAiAvailable()) {
           console.log(
-            `\n${RED}✖${RESET} Set ${CYAN}OPENAI_API_KEY${RESET} env variable first.\n`,
+            `\n${RED}✖${RESET} Set ${CYAN}OPENAI_API_KEY${RESET} env variable first.`,
+          );
+          console.log(
+            `${DIM}PowerShell:  $env:OPENAI_API_KEY = "sk-..."${RESET}`,
+          );
+          console.log(
+            `${DIM}Linux/macOS: export OPENAI_API_KEY="sk-..."${RESET}\n`,
           );
           await new Promise((r) => setTimeout(r, 2000));
           break;

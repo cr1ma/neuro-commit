@@ -112,19 +112,6 @@ function confirm(prompt, defaultYes = true) {
 /**
  * Free-form text input.
  */
-function askInput(prompt) {
-  return new Promise((resolve) => {
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-    rl.question(`${prompt} `, (answer) => {
-      rl.close();
-      resolve(answer.trim());
-    });
-  });
-}
-
 /**
  * Format number with space separators.
  */
@@ -172,7 +159,6 @@ module.exports = {
   SHOW_CURSOR,
   showSelectMenu,
   confirm,
-  askInput,
   formatNumber,
   createSpinner,
 };

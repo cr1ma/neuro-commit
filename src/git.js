@@ -1,4 +1,7 @@
-const { execSync } = require("child_process");
+const { execSync, execFileSync } = require("child_process");
+const fs = require("fs");
+const path = require("path");
+const os = require("os");
 
 /**
  * Lock file patterns — diffs for these are too large and noisy.
@@ -60,22 +63,9 @@ function getStagedDiff() {
   if (nonLockFiles.length === 0) return "";
 
   try {
-    return execSync(
-      `git diff --staged -- ${nonLockFiles.map((f) => `"${f}"`).join(" ")}`,
-      { encoding: "utf-8", maxBuffer: 10 * 1024 * 1024 },
-    ).trim();
-  } catch {
-    return "";
-  }
-}
-
-/**
- * Returns diffstat summary for staged changes.
- */
-function getStagedStats() {
-  try {
-    return execSync("git diff --staged --stat", {
+    return execFileSync("git", ["diff", "--staged", "--", ...nonLockFiles], {
       encoding: "utf-8",
+      maxBuffer: 10 * 1024 * 1024,
     }).trim();
   } catch {
     return "";
@@ -179,10 +169,6 @@ function getRecentCommits(count = 5) {
  */
 function gitCommit(message) {
   try {
-    // Write message to a temp file to avoid shell escaping issues
-    const fs = require("fs");
-    const path = require("path");
-    const os = require("os");
     const tmpFile = path.join(
       os.tmpdir(),
       `neuro-commit-msg-${Date.now()}.txt`,
@@ -229,41 +215,9 @@ function gitPush() {
   }
 }
 
-/**
- * Get README content if it exists.
- */
-function getReadmeContent() {
-  try {
-    const fs = require("fs");
-    const path = require("path");
-    const cwd = process.cwd();
-
-    const readmeNames = [
-      "README.md",
-      "readme.md",
-      "README.MD",
-      "README",
-      "README.txt",
-    ];
-
-    for (const name of readmeNames) {
-      const filePath = path.join(cwd, name);
-      if (fs.existsSync(filePath)) {
-        const content = fs.readFileSync(filePath, "utf-8");
-        // Limit to first 500 chars to avoid bloating the prompt
-        return content.slice(0, 500);
-      }
-    }
-    return null;
-  } catch {
-    return null;
-  }
-}
-
 module.exports = {
   getStagedFiles,
   getStagedDiff,
-  getStagedStats,
   getStagedNumstat,
   isGitRepo,
   isLockFile,
@@ -272,6 +226,4 @@ module.exports = {
   getRecentCommits,
   gitCommit,
   gitPush,
-  getReadmeContent,
-  LOCK_FILE_PATTERNS,
 };

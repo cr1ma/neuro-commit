@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const { execSync } = require("child_process");
 const {
   getStagedFiles,
   getStagedDiff,
@@ -18,6 +17,7 @@ const {
   generateCommitMessage,
   calculateCost,
   estimateCost,
+  countTokens,
 } = require("./ai");
 const { loadConfig } = require("./config");
 const {
@@ -78,7 +78,7 @@ async function runAiCommitMode() {
     }
   }
 
-  const estimatedTokens = Math.ceil(diff.length / 4);
+  const estimatedTokens = countTokens(diff);
   const cost = estimateCost(estimatedTokens, 150);
   console.log(
     `\n${DIM}~${formatNumber(estimatedTokens)} tokens | est. $${cost.toFixed(4)}${RESET}\n`,
@@ -105,9 +105,20 @@ async function runAiCommitMode() {
     message = result.message;
   } catch (err) {
     console.log(`\n${RED}✖${RESET} ${err.message}\n`);
-    if (err.message.includes("API key") || err.message.includes("OPENAI")) {
-      console.log(`${DIM}Set: ${CYAN}export OPENAI_API_KEY="sk-..."${RESET}`);
-      console.log(`${DIM}Win: ${CYAN}setx OPENAI_API_KEY "sk-..."${RESET}\n`);
+    if (
+      err.message.includes("API key") ||
+      err.message.includes("OPENAI") ||
+      err.message.includes("401")
+    ) {
+      console.log(
+        `${DIM}Linux/macOS: ${CYAN}export OPENAI_API_KEY="sk-..."${RESET}`,
+      );
+      console.log(
+        `${DIM}PowerShell:  ${CYAN}$env:OPENAI_API_KEY = "sk-..."${RESET}`,
+      );
+      console.log(
+        `${DIM}CMD:         ${CYAN}set OPENAI_API_KEY=sk-...${RESET}\n`,
+      );
     }
     return;
   }
@@ -222,7 +233,13 @@ async function generate(diff, filesInfo, context, config, extra = "") {
   spinner.start();
   const startTime = Date.now();
 
-  const result = await generateCommitMessage(diff, filesInfo, context, extra);
+  let result;
+  try {
+    result = await generateCommitMessage(diff, filesInfo, context, extra);
+  } catch (err) {
+    spinner.stop(`${RED}✖${RESET} ${err.message}`);
+    throw err;
+  }
 
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
   let statsLine = `${GREEN}✓${RESET} ${elapsed}s`;
@@ -252,10 +269,14 @@ async function editMessage(message) {
     "utf-8",
   );
 
-  const editor = process.env.VISUAL || process.env.EDITOR || "code --wait";
+  const editorCmd = process.env.VISUAL || process.env.EDITOR || "code --wait";
+  const parts = editorCmd.split(/\s+/);
+  const editorBin = parts[0];
+  const editorArgs = [...parts.slice(1), tmpFile];
 
   try {
-    execSync(`${editor} "${tmpFile}"`, { stdio: "inherit" });
+    const { execFileSync } = require("child_process");
+    execFileSync(editorBin, editorArgs, { stdio: "inherit", shell: true });
   } catch {
     console.log(`${YELLOW}⚠${RESET} Editor failed. Message unchanged.`);
     try {

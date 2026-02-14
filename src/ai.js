@@ -1,6 +1,20 @@
 const OpenAI = require("openai");
+const { z } = require("zod");
+const { zodTextFormat } = require("openai/helpers/zod");
+const { get_encoding } = require("tiktoken");
 const { getApiKey, loadConfig } = require("./config");
 const { isLockFile, statusLabel } = require("./git");
+
+// Lazy-initialized tiktoken encoder (o200k_base for GPT-5 / GPT-4o family)
+let _encoder = null;
+
+/**
+ * Count tokens accurately using tiktoken (o200k_base).
+ */
+function countTokens(text) {
+  if (!_encoder) _encoder = get_encoding("o200k_base");
+  return _encoder.encode(text).length;
+}
 
 // Pricing per 1M tokens — gpt-5-nano
 const MODEL_PRICING = {
@@ -8,6 +22,16 @@ const MODEL_PRICING = {
   cachedInput: 0.005,
   output: 0.4,
 };
+
+// Structured output schema
+const CommitMessage = z.object({
+  title: z
+    .string()
+    .describe("Commit title line (max ~72 chars, imperative mood, no period)"),
+  body: z
+    .array(z.string())
+    .describe("Bullet points describing key changes (without leading dash)"),
+});
 
 /**
  * Build a file summary string for the prompt.
@@ -59,11 +83,9 @@ Rules:
 1. Use Conventional Commits: feat:, fix:, docs:, style:, refactor:, test:, chore:, perf:, ci:, build:
 2. If changes affect a specific scope, use parentheses: feat(auth): ...
 3. Title max ${maxLength} chars, imperative mood, no period at end.
-4. Blank line between title and body.
-5. Body uses bullet points (- ) for key changes.
-6. Be specific — WHAT changed and WHY.
-7. Omit file paths unless essential. Omit lock file changes.
-8. Return ONLY the commit message. No markdown fences, no quotes.
+4. Body: concise bullet points for key changes.
+5. Be specific — WHAT changed and WHY.
+6. Omit file paths unless essential. Omit lock file changes.
 ${langInstruction}
 ${branchContext}
 ${historyContext}`.trim();
@@ -124,7 +146,40 @@ function estimateCost(estimatedInputTokens, estimatedOutputTokens = 200) {
 }
 
 /**
- * Generate a commit message via OpenAI Responses API (non-streaming).
+ * Format structured response into conventional commit message string.
+ */
+function formatCommitMessage(parsed) {
+  const lines = [parsed.title];
+  if (parsed.body && parsed.body.length > 0) {
+    lines.push("");
+    for (const point of parsed.body) {
+      lines.push(`- ${point}`);
+    }
+  }
+  return lines.join("\n");
+}
+
+/**
+ * Extract parsed content from Structured Outputs response.
+ * Handles refusals gracefully.
+ */
+function extractParsedContent(response) {
+  for (const output of response.output) {
+    if (output.type !== "message") continue;
+    for (const item of output.content) {
+      if (item.type === "refusal") {
+        throw new Error(`Model refused: ${item.refusal}`);
+      }
+      if (item.parsed) {
+        return item.parsed;
+      }
+    }
+  }
+  throw new Error("Could not parse structured response.");
+}
+
+/**
+ * Generate a commit message via OpenAI Responses API with Structured Outputs.
  * Returns { message, usage }.
  */
 async function generateCommitMessage(
@@ -149,17 +204,20 @@ async function generateCommitMessage(
     instructions: systemPrompt,
     input: userPrompt,
     reasoning: { effort: "low" },
-    text: { verbosity: "low" },
+    text: {
+      format: zodTextFormat(CommitMessage, "commit_message"),
+    },
   };
 
   if (config.devMode) {
     params.store = true;
   }
 
-  const response = await client.responses.create(params);
+  const response = await client.responses.parse(params);
+  const parsed = extractParsedContent(response);
 
   return {
-    message: response.output_text,
+    message: formatCommitMessage(parsed),
     usage: response.usage || null,
   };
 }
@@ -171,5 +229,6 @@ module.exports = {
   generateCommitMessage,
   calculateCost,
   estimateCost,
+  countTokens,
   MODEL_PRICING,
 };
