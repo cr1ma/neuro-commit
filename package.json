@@ -1,6 +1,6 @@
 {
   "name": "neuro-commit",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "neuro-commit CLI utility",
   "author": "cr1ma.dev",
   "bin": {
