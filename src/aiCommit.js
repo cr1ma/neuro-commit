@@ -270,13 +270,13 @@ async function editMessage(message) {
   );
 
   const editorCmd = process.env.VISUAL || process.env.EDITOR || "code --wait";
-  const parts = editorCmd.split(/\s+/);
-  const editorBin = parts[0];
-  const editorArgs = [...parts.slice(1), tmpFile];
 
   try {
-    const { execFileSync } = require("child_process");
-    execFileSync(editorBin, editorArgs, { stdio: "inherit", shell: true });
+    const { execSync } = require("child_process");
+    // Use quotes for the path to handle spaces safely
+    const quotedFile =
+      process.platform === "win32" ? `"${tmpFile}"` : `'${tmpFile}'`;
+    execSync(`${editorCmd} ${quotedFile}`, { stdio: "inherit" });
   } catch {
     console.log(`${YELLOW}⚠${RESET} Editor failed. Message unchanged.`);
     try {
